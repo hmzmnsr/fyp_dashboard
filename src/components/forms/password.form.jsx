@@ -1,47 +1,64 @@
 import React, { useState } from 'react';
+import api from '../../services/api';
 
-const ChangePasswordForm = ({ formData, handleInputChange, handlePasswordSubmit }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [message, setMessage] = useState('');
-    const [messageType, setMessageType] = useState('');
+const ChangePasswordForm = () => {
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
-    const toggleEdit = () => {
-        setIsEditing(prev => !prev);
-        if (!isEditing) {
-            setMessage('');
+    const validatePasswords = () => {
+        if (!oldPassword || !newPassword || !confirmNewPassword) {
+            return "All fields are required.";
         }
+        if (newPassword !== confirmNewPassword) {
+            return "New password and confirm password do not match.";
+        }
+        return '';
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.newPassword !== formData.confirmNewPassword) {
-            setMessage('Passwords do not match');
-            setMessageType('error');
+
+        const validationError = validatePasswords();
+        if (validationError) {
+            setError(validationError);
+            clearMessagesAfterDelay();
             return;
         }
 
         try {
-            await handlePasswordSubmit();
-            setMessage('Password changed successfully');
-            setMessageType('success');
-        } catch (error) {
-            setMessage('Failed to change password');
-            setMessageType('error');
+            const response = await api.patch('/users/password', {
+                oldPassword,
+                newPassword
+            });
+            if (response.status === 200) {
+                setSuccess('Password changed successfully.');
+                setOldPassword('');
+                setNewPassword('');
+                setConfirmNewPassword('');
+                clearMessagesAfterDelay();
+            }
+        } catch (err) {
+            setError('Failed to change password. Please check your old password.');
+            clearMessagesAfterDelay();
         }
+    };
+
+    const clearMessagesAfterDelay = () => {
+        setTimeout(() => {
+            setError('');
+            setSuccess('');
+        }, 2000);
     };
 
     return (
         <div className='bg-white shadow-2xl rounded-lg p-10 relative mt-6'>
             <div className='grid grid-cols-12'>
                 <h2 className='col-span-9 text-2xl font-semibold mb-4'>Change Password</h2>
-                <button
-                    onClick={toggleEdit}
-                    className='col-span-3 bg-secondary-color text-white rounded-md w-2/6 ml-auto'
-                >
-                    <span>{isEditing ? 'Cancel' : 'Edit'}</span>
-                </button>
             </div>
-            <form onSubmit={handleSubmit} className='space-y-4'>
+            <form className='space-y-4' onSubmit={handleSubmit}>
                 <div className='flex flex-col'>
                     <label htmlFor='oldPassword' className='text-gray-700 mb-2'>
                         Old Password
@@ -50,11 +67,9 @@ const ChangePasswordForm = ({ formData, handleInputChange, handlePasswordSubmit 
                         type='password'
                         id='oldPassword'
                         name='oldPassword'
-                        value={formData.oldPassword}
-                        onChange={handleInputChange}
-                        disabled={!isEditing}
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
                         className='w-full border border-gray-300 p-2 rounded-md'
-                        required={isEditing}
                     />
                 </div>
                 <div className='flex flex-col'>
@@ -65,11 +80,9 @@ const ChangePasswordForm = ({ formData, handleInputChange, handlePasswordSubmit 
                         type='password'
                         id='newPassword'
                         name='newPassword'
-                        value={formData.newPassword}
-                        onChange={handleInputChange}
-                        disabled={!isEditing}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
                         className='w-full border border-gray-300 p-2 rounded-md'
-                        required={isEditing}
                     />
                 </div>
                 <div className='flex flex-col'>
@@ -80,30 +93,19 @@ const ChangePasswordForm = ({ formData, handleInputChange, handlePasswordSubmit 
                         type='password'
                         id='confirmNewPassword'
                         name='confirmNewPassword'
-                        value={formData.confirmNewPassword}
-                        onChange={handleInputChange}
-                        disabled={!isEditing}
+                        value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
                         className='w-full border border-gray-300 p-2 rounded-md'
-                        required={isEditing}
                     />
                 </div>
-
-                {isEditing && (
-                    <>
-                        <button
-                            type='submit'
-                            className='bg-secondary-color text-white py-3 px-4 rounded-md'
-                        >
-                            Update Password
-                        </button>
-                    </>
-                )}
-
-                {message && (
-                    <p className={`mt-4 ${messageType === 'success' ? 'text-green-500' : 'text-red-500'}`}>
-                        {message}
-                    </p>
-                )}
+                <button
+                    type='submit'
+                    className='bg-secondary-color hover:bg-blue-700 text-white py-3 px-4 rounded-md mb-2'
+                >
+                    Update Password
+                </button>
+                {error && <div className='text-red-500 mb-4'>{error}</div>}
+                {success && <div className='text-green-500 mb-4'>{success}</div>}
             </form>
         </div>
     );
