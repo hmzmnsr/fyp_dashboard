@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import FlexContainer from '../../components/containers/flex.container';
 import AddDownloadPopup from "../../components/popups/download.popup";
 import DownloadTable from "../../components/tables/download.table";
+import { fetchDownloads, createDownload, updateDownload, deleteDownload } from "../../redux/actions/download.action";
 
 const Downloads = () => {
     const [showPopup, setShowPopup] = useState(false);
-    const [documents, setDocuments] = useState([]);
     const [editDocumentIndex, setEditDocumentIndex] = useState(null);
 
+    const dispatch = useDispatch();
+    const { downloads, loading, error } = useSelector((state) => state.download); // Updated selector
+
+    useEffect(() => {
+        dispatch(fetchDownloads());
+    }, [dispatch]);
+
     const addDocument = (newDocument) => {
+        const formData = new FormData();
+        formData.append('documentName', newDocument.documentName);
+        formData.append('attachment', newDocument.attachment);
+
         if (editDocumentIndex !== null) {
-            const updatedDocuments = [...documents];
-            updatedDocuments[editDocumentIndex] = newDocument;
-            setDocuments(updatedDocuments);
+            const documentId = downloads[editDocumentIndex]._id;
+            dispatch(updateDownload({ id: documentId, formData }));
             setEditDocumentIndex(null);
         } else {
-            setDocuments([...documents, newDocument]);
-        } 
+            dispatch(createDownload(formData));
+        }
     };
 
     const handleEdit = (index) => {
@@ -25,8 +36,8 @@ const Downloads = () => {
     };
 
     const handleDelete = (index) => {
-        const updatedDocuments = documents.filter((_, i) => i !== index);
-        setDocuments(updatedDocuments);
+        const documentId = downloads[index]._id;
+        dispatch(deleteDownload(documentId));
     };
 
     return (
@@ -45,17 +56,20 @@ const Downloads = () => {
                 </div>
             </div>
 
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+
             <DownloadTable
-                documents={documents}
+                documents={downloads}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
-            
+
             {showPopup && (
                 <AddDownloadPopup
                     setShowPopup={setShowPopup}
                     addDocument={addDocument}
-                    documentToEdit={editDocumentIndex !== null ? documents[editDocumentIndex] : null}
+                    documentToEdit={editDocumentIndex !== null ? downloads[editDocumentIndex] : null}
                 />
             )}
         </FlexContainer>

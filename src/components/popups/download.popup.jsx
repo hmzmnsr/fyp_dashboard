@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-const AddDownloadPopup = ({ setShowPopup, addDocument }) => {
-    const [documentName, setDocumentName] = useState('');
-    const [attachment, setAttachment] = useState(null);
+const AddDownloadPopup = ({ setShowPopup, addDocument, documentToEdit }) => {
+    const [documentName, setDocumentName] = useState(documentToEdit ? documentToEdit.documentName : '');
+    const [attachment, setAttachment] = useState(documentToEdit ? documentToEdit.attachment : null);
 
     const handleSubmit = () => {
         if (documentName && attachment) {
@@ -16,7 +16,9 @@ const AddDownloadPopup = ({ setShowPopup, addDocument }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg w-3/6">
-                <h2 className="text-2xl font-bold mb-4">Add Document</h2>
+                <h2 className="text-2xl font-bold mb-4">
+                    {documentToEdit ? 'Edit Document' : 'Add Document'}
+                </h2>
 
                 <label className="block mb-2">Document Name:</label>
                 <input
@@ -44,7 +46,7 @@ const AddDownloadPopup = ({ setShowPopup, addDocument }) => {
                         className="px-8 py-2 bg-secondary-color text-white rounded"
                         onClick={handleSubmit}
                     >
-                        Add
+                        {documentToEdit ? 'Update' : 'Add'}
                     </button>
                 </div>
             </div>
@@ -53,4 +55,3 @@ const AddDownloadPopup = ({ setShowPopup, addDocument }) => {
 };
 
 export default AddDownloadPopup;
- 

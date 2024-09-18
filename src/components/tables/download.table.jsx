@@ -1,3 +1,4 @@
+// src/components/DownloadTable.jsx
 import React from 'react';
 
 const DownloadTable = ({ documents, onEdit, onDelete }) => {
@@ -11,12 +12,25 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                         <th className="w-1/3 px-4 py-2">Actions</th>
                     </tr>
                 </thead>
-                <tbody className='text-center'>
+                <tbody className="text-center">
                     {documents.length > 0 ? (
                         documents.map((doc, index) => (
                             <tr key={index} className="border-b">
                                 <td className="px-4 py-2">{doc.documentName}</td>
-                                <td className="px-4 py-2">{doc.attachment.name}</td>
+                                <td className="px-4 py-2">
+                                    {doc.attachment ? (
+                                        <a 
+                                            href={`http://localhost:8001/uploads/${doc.attachment}`} // Use filename only
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="text-blue-500 hover:underline"
+                                        >
+                                            {doc.attachment.split('_')[1]} {/* Display the file name */}
+                                        </a>
+                                    ) : (
+                                        'No attachment'
+                                    )}
+                                </td>
                                 <td className="px-4 py-2">
                                     <button
                                         className="mr-2 px-6 py-2 bg-secondary-color hover:bg-blue-800 text-white rounded"
@@ -46,4 +60,4 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
     );
 };
 
-export default DownloadTable; 
+export default DownloadTable;
