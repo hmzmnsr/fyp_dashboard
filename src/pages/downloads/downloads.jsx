@@ -16,7 +16,7 @@ const Downloads = () => {
             setEditDocumentIndex(null);
         } else {
             setDocuments([...documents, newDocument]);
-        }
+        } 
     };
 
     const handleEdit = (index) => {

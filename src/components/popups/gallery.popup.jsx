@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createAlbum, updateAlbum } from "../../redux/actions/gallery.action.jsx";
 
-const GalleryPopup = ({ setShowPopup, onAddAlbum }) => {
+const GalleryPopup = ({ setShowPopup, onAddAlbum, editAlbum }) => {
     const [albumName, setAlbumName] = useState('');
     const [coverPhoto, setCoverPhoto] = useState(null);
     const [images, setImages] = useState([]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (editAlbum) {
+            setAlbumName(editAlbum.name);
+            setCoverPhoto(editAlbum.coverPhoto);
+            setImages(editAlbum.images || []);
+        }
+    }, [editAlbum]);
 
     const handleCoverPhotoChange = (e) => {
         setCoverPhoto(e.target.files[0]);
@@ -13,21 +24,34 @@ const GalleryPopup = ({ setShowPopup, onAddAlbum }) => {
         setImages([...e.target.files]);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const newAlbum = {
+
+        const albumData = {
             name: albumName,
-            coverPhoto: coverPhoto,
-            images: images,
+            coverPhoto,
+            images,
         };
-        
-        onAddAlbum(newAlbum);
+
+        try {
+            if (editAlbum) {
+                await dispatch(updateAlbum({ _id: editAlbum._id, albumData }));
+            } else {
+                await dispatch(createAlbum(albumData));
+            }
+            onAddAlbum();
+            setShowPopup(false);
+        } catch (error) {
+            console.error('Error saving album:', error);
+        }
     };
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white px-20 py-10 rounded-lg w-3/6">
-                <h2 className="text-2xl font-bold mb-4">Add New Album</h2>
+                <h2 className="text-2xl font-bold mb-4">
+                    {editAlbum ? 'Edit Album' : 'Add New Album'}
+                </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Album Name</label>
@@ -46,7 +70,6 @@ const GalleryPopup = ({ setShowPopup, onAddAlbum }) => {
                             onChange={handleCoverPhotoChange}
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                             accept="image/*"
-                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -57,7 +80,6 @@ const GalleryPopup = ({ setShowPopup, onAddAlbum }) => {
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                             accept="image/*"
                             multiple
-                            required
                         />
                     </div>
                     <div className="flex justify-end">
@@ -70,7 +92,7 @@ const GalleryPopup = ({ setShowPopup, onAddAlbum }) => {
                         </button>
                         <button
                             type="submit"
-                            className="px-8 py-2 bg-secondary-color text-white rounded "
+                            className="px-8 py-2 bg-secondary-color text-white rounded"
                         >
                             Save
                         </button>

@@ -1,23 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import FlexContainer from '../../components/containers/flex.container';
 import GalleryPopup from '../../components/popups/gallery.popup';
 import GalleryTable from "../../components/tables/gallery.table";
+import { fetchAlbums, deleteAlbum } from '../../redux/actions/gallery.action.jsx';
 
 const Gallery = () => {
     const [showPopup, setShowPopup] = useState(false);
-    const [albums, setAlbums] = useState([]);
+    const [editAlbum, setEditAlbum] = useState(null);
+    const dispatch = useDispatch();
+    const albums = useSelector(state => state.gallery.albums || []);
 
-    const handleAddAlbum = (newAlbum) => {
-        setAlbums([...albums, newAlbum]);
+    useEffect(() => {
+        dispatch(fetchAlbums());
+    }, [dispatch]);
+
+    const handleAddAlbum = () => {
         setShowPopup(false);
+        setEditAlbum(null);
+        dispatch(fetchAlbums());
     };
 
     const handleDeleteAlbum = (index) => {
-        setAlbums(albums.filter((_, i) => i !== index));
+        const albumId = albums[index]._id;
+        dispatch(deleteAlbum(albumId)).then(() => {
+            dispatch(fetchAlbums());
+        });
     };
 
     const handleEditAlbum = (index) => {
-        console.log('Edit album:', index);
+        const albumToEdit = albums[index];
+        setEditAlbum(albumToEdit); 
+        setShowPopup(true);       
     };
 
     return (
@@ -37,7 +51,11 @@ const Gallery = () => {
             </div>
 
             {showPopup && (
-                <GalleryPopup setShowPopup={setShowPopup} onAddAlbum={handleAddAlbum} />
+                <GalleryPopup
+                    setShowPopup={setShowPopup}
+                    onAddAlbum={handleAddAlbum}
+                    editAlbum={editAlbum}
+                />
             )}
 
             <GalleryTable

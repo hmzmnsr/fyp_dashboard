@@ -9,7 +9,8 @@ const LoginPage = () => {
          
             <div className='col-span-6 bg-primary-color flex flex-col justify-center items-center'>
                 <img src={logo} alt='logo' className='w-2/6'/>
-                <p className='text-3xl font-bold text-white my-10'>Admin's Portal</p>
+                <p className='text-3xl font-bold text-white my-5'>Computer Science Department</p>
+                <p className='text-3xl font-bold text-white'>Admin's Portal</p>
             </div>
              
             <div className='col-span-6 flex flex-col items-center justify-center'>

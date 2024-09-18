@@ -89,3 +89,4 @@ const AddFacultyPopup = ({ onClose, onAdd }) => {
 };
 
 export default AddFacultyPopup;
+ 

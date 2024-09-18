@@ -46,15 +46,15 @@ export const profileSlice = createSlice({
       // Handle updatePassword
       .addCase(updatePassword.pending, (state) => {
         state.loading = true;
-        state.error = null; // Reset error on new request
+        state.error = null;
       })
       .addCase(updatePassword.fulfilled, (state) => {
         state.loading = false;
-        state.error = null; // Clear any previous errors on success
+        state.error = null;
       })
       .addCase(updatePassword.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload; // Set the error message
+        state.error = action.payload;
       });
   },
 });

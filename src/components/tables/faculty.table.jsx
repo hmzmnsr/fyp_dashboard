@@ -60,4 +60,4 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
     );
 };
 
-export default FacultyTable;
+export default FacultyTable; 

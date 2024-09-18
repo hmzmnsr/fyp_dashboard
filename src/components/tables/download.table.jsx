@@ -46,4 +46,4 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
     );
 };
 
-export default DownloadTable;
+export default DownloadTable; 
