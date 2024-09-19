@@ -7,6 +7,7 @@ const ChangePasswordForm = () => {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
 
     const validatePasswords = () => {
         if (!oldPassword || !newPassword || !confirmNewPassword) {
@@ -39,6 +40,7 @@ const ChangePasswordForm = () => {
                 setNewPassword('');
                 setConfirmNewPassword('');
                 clearMessagesAfterDelay();
+                setIsEditing(false);
             }
         } catch (err) {
             setError('Failed to change password. Please check your old password.');
@@ -55,8 +57,16 @@ const ChangePasswordForm = () => {
 
     return (
         <div className='bg-white shadow-2xl rounded-lg p-10 relative mt-6'>
-            <div className='grid grid-cols-12'>
-                <h2 className='col-span-9 text-2xl font-semibold mb-4'>Change Password</h2>
+            <div className='flex justify-between items-center mb-4'>
+                <h2 className='text-2xl font-semibold'>Change Password</h2>
+                <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className={`px-4 py-2 rounded-md ${
+                        isEditing ? 'bg-gray-500 hover:bg-gray-600' : 'bg-secondary-color hover:bg-blue-700'
+                    } text-white`}
+                >
+                    {isEditing ? 'Cancel' : 'Edit'}
+                </button>
             </div>
             <form className='space-y-4' onSubmit={handleSubmit}>
                 <div className='flex flex-col'>
@@ -70,6 +80,7 @@ const ChangePasswordForm = () => {
                         value={oldPassword}
                         onChange={(e) => setOldPassword(e.target.value)}
                         className='w-full border border-gray-300 p-2 rounded-md'
+                        disabled={!isEditing}
                     />
                 </div>
                 <div className='flex flex-col'>
@@ -83,6 +94,7 @@ const ChangePasswordForm = () => {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         className='w-full border border-gray-300 p-2 rounded-md'
+                        disabled={!isEditing}
                     />
                 </div>
                 <div className='flex flex-col'>
@@ -96,14 +108,17 @@ const ChangePasswordForm = () => {
                         value={confirmNewPassword}
                         onChange={(e) => setConfirmNewPassword(e.target.value)}
                         className='w-full border border-gray-300 p-2 rounded-md'
+                        disabled={!isEditing} 
                     />
                 </div>
-                <button
-                    type='submit'
-                    className='bg-secondary-color hover:bg-blue-700 text-white py-3 px-4 rounded-md mb-2'
-                >
-                    Update Password
-                </button>
+                {isEditing && (
+                    <button
+                        type='submit'
+                        className='bg-secondary-color hover:bg-blue-700 text-white py-3 px-4 rounded-md mb-2'
+                    >
+                        Update Password
+                    </button>
+                )}
                 {error && <div className='text-red-500 mb-4'>{error}</div>}
                 {success && <div className='text-green-500 mb-4'>{success}</div>}
             </form>

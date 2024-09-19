@@ -18,12 +18,14 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                         data.map((item, index) => (
                             <tr key={index} className='bg-gray-50 hover:bg-gray-100'>
                                 <td className='py-2 px-4 text-center'>
-                                    {item.image && (
+                                    {item.image ? (
                                         <img
                                             src={URL.createObjectURL(item.image)}
                                             alt='Faculty'
                                             className='w-16 h-16 rounded-full object-cover mx-auto'
                                         />
+                                    ) : (
+                                        <span>No Image</span>
                                     )}
                                 </td>
                                 <td className='py-2 px-4 text-center'>{item.name}</td>
@@ -60,4 +62,4 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
     );
 };
 
-export default FacultyTable; 
+export default FacultyTable;

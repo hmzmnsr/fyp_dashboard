@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 const AddFacultyPopup = ({ onClose, onAdd }) => {
     const [name, setName] = useState('');
-    const [department, setDepartment] = useState('');
     const [qualification, setQualification] = useState('');
+    const [position, setPosition] = useState('Dean');  // Default position as 'Dean'
     const [image, setImage] = useState(null);
 
     const handleImageChange = (e) => {
@@ -15,13 +15,13 @@ const AddFacultyPopup = ({ onClose, onAdd }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onAdd({ name, department, qualification, image });
+        onAdd({ name, qualification, position, image });
         onClose();
     };
 
     return (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
-            <div className='bg-white px-20 py-10 rounded-lg w-3/6'>
+            <div className='bg-white px-20 py-16 rounded-lg w-3/6'>
                 <h2 className='text-xl font-bold mb-4'>Add Faculty</h2>
                 <form onSubmit={handleSubmit}>
                     <div className='mb-4'>
@@ -36,17 +36,6 @@ const AddFacultyPopup = ({ onClose, onAdd }) => {
                     </div>
 
                     <div className='mb-4'>
-                        <label className='block text-gray-700 text-sm font-bold mb-2'>Department</label>
-                        <input
-                            type='text'
-                            value={department}
-                            onChange={(e) => setDepartment(e.target.value)}
-                            className='w-full p-2 border border-gray-300 rounded'
-                            required
-                        />
-                    </div>
-
-                    <div className='mb-4'>
                         <label className='block text-gray-700 text-sm font-bold mb-2'>Qualification</label>
                         <input
                             type='text'
@@ -55,6 +44,23 @@ const AddFacultyPopup = ({ onClose, onAdd }) => {
                             className='w-full p-2 border border-gray-300 rounded'
                             required
                         />
+                    </div>
+
+                    <div className='mb-4'>
+                        <label className='block text-gray-700 text-sm font-bold mb-2'>Position</label>
+                        <select
+                            value={position}
+                            onChange={(e) => setPosition(e.target.value)}
+                            className='w-full p-2 border border-gray-300 rounded'
+                            required
+                        >
+                            <option value="Dean">Dean</option>
+                            <option value="HOD">HOD</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Incharge">Incharge</option>
+                        </select>
                     </div>
 
                     <div className='mb-4'>
@@ -89,4 +95,3 @@ const AddFacultyPopup = ({ onClose, onAdd }) => {
 };
 
 export default AddFacultyPopup;
- 
