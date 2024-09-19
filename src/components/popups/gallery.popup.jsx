@@ -94,7 +94,7 @@ const GalleryPopup = ({ setShowPopup, onAddAlbum, editAlbum }) => {
                             type="submit"
                             className="px-8 py-2 bg-secondary-color text-white rounded"
                         >
-                            Save
+                            {editAlbum ? 'Update' : 'Add'}
                         </button>
                     </div>
                 </form>
