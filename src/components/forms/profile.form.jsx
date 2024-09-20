@@ -72,7 +72,7 @@ const ProfileForm = () => {
                 <h2 className='text-2xl font-semibold'>Profile</h2>
                 <button
                     onClick={() => setIsEditing(!isEditing)}
-                    className={`px-4 py-2 rounded-md ${
+                    className={`px-8 py-2 rounded-md ${
                         isEditing ? 'bg-gray-500 hover:bg-gray-600' : 'bg-secondary-color hover:bg-blue-700'
                     } text-white`}
                 >

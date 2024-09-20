@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RoadmapTable = ({ semester, roadmap, onEdit, onDelete }) => {
+const ProgramTable = ({ semester, roadmap, onEdit, onDelete }) => {
     return (
         <div className="pb-8">
             <h4 className="text-xl font-semibold mb-2">Semester {semester}</h4>
@@ -37,5 +37,5 @@ const RoadmapTable = ({ semester, roadmap, onEdit, onDelete }) => {
     );
 };
 
-export default RoadmapTable;
+export default ProgramTable;
  

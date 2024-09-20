@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import FlexContainer from '../../components/containers/flex.container';
-import AddRoadmapPopup from "../../components/popups/roadmap.popup";
-import RoadmapTable from "../../components/tables/roadmap.table";
+import ProgramPopup from "../../components/popups/program.popup";
+import ProgramTable from "../../components/tables/program.table";
 
 const Programs = () => {
     const [selectedProgram, setSelectedProgram] = useState('bachelors in computer science');
     const [showPopup, setShowPopup] = useState(false);
     const [roadmap, setRoadmap] = useState({});
+    const [editingCourse, setEditingCourse] = useState(null);
 
     const handleTabClick = (program) => {
         setSelectedProgram(program);
@@ -18,14 +19,34 @@ const Programs = () => {
     };
 
     const addRoadmapEntry = (term, year, semester, courseDetails) => {
-        const key = `${term} ${year}`;  // "Fall 2024", "Spring 2028", etc.
+        const key = `${term} ${year}`; // "Fall 2024", "Spring 2028", etc.
         if (!roadmap[key]) {
             roadmap[key] = {};
         }
         if (!roadmap[key][semester]) {
             roadmap[key][semester] = [];
         }
-        roadmap[key][semester].push(courseDetails);
+        if (editingCourse) {
+            // Edit the existing course
+            const updatedSemester = roadmap[key][semester].map(course =>
+                course === editingCourse ? courseDetails : course
+            );
+            roadmap[key][semester] = updatedSemester;
+            setEditingCourse(null);
+        } else {
+            roadmap[key][semester].push(courseDetails);
+        }
+        setRoadmap({ ...roadmap });
+        setShowPopup(false);
+    };
+
+    const handleEditCourse = (termYear, semester, course) => {
+        setEditingCourse(course);
+        setShowPopup(true);
+    };
+
+    const handleDeleteCourse = (termYear, semester, course) => {
+        roadmap[termYear][semester] = roadmap[termYear][semester].filter(c => c !== course);
         setRoadmap({ ...roadmap });
     };
 
@@ -48,12 +69,14 @@ const Programs = () => {
 
                 {Object.keys(roadmap).map((termYear) => (
                     <div key={termYear} className='my-10 px-10 py-5 bg-gray-200'>
-                        <h3 className="text-2xl font-bold mb-8 pb-4 pt-5 text-primary-color border-b-4 border-red-500">{termYear.charAt(0).toUpperCase() + termYear.slice(1)}</h3> {/* Display "Fall 2024", "Spring 2028" */}
+                        <h3 className="text-2xl font-bold mb-8 pb-4 pt-5 text-primary-color border-b-4 border-red-500">{termYear.charAt(0).toUpperCase() + termYear.slice(1)}</h3>
                         {Object.keys(roadmap[termYear]).map((sem) => (
-                            <RoadmapTable
+                            <ProgramTable
                                 key={sem}
                                 semester={sem}
                                 roadmap={roadmap[termYear][sem]}
+                                onEdit={(course) => handleEditCourse(termYear, sem, course)}
+                                onDelete={(course) => handleDeleteCourse(termYear, sem, course)}
                             />
                         ))}
                     </div>
@@ -90,7 +113,7 @@ const Programs = () => {
             {renderProgramContent()}
 
             {showPopup && (
-                <AddRoadmapPopup
+                <ProgramPopup
                     selectedProgram={selectedProgram}
                     setShowPopup={setShowPopup}
                     addRoadmapEntry={addRoadmapEntry}
@@ -102,4 +125,3 @@ const Programs = () => {
 };
 
 export default Programs;
- 

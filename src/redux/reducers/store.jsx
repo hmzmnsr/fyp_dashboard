@@ -1,9 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import profileReducer from "../reducers/profile.reducer";
-import systemReducer from "../reducers/system.reducer";
-import galleryReducer from "../reducers/gallery.reducer";
-import downloadReducer from "../reducers/download.reducer";
-import facultyReducer from "../reducers/faculty.reducer";
+import { configureStore } from '@reduxjs/toolkit';
+import profileReducer from '../reducers/profile.reducer';
+import systemReducer from '../reducers/system.reducer';
+import galleryReducer from '../reducers/gallery.reducer';
+import downloadReducer from '../reducers/download.reducer';
+import facultyReducer from '../reducers/faculty.reducer';
+import programsReducer from '../reducers/program.reducer';  // Ensure it matches slice naming convention
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     system: systemReducer,
     gallery: galleryReducer,
     download: downloadReducer,
-    faculty: facultyReducer
+    faculty: facultyReducer,
+    programs: programsReducer, // Fix to match plural slice name
   },
 });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddRoadmapPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
+const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
     const [term, setTerm] = useState('fall');
     const [year, setYear] = useState('2023');
     const [semester, setSemester] = useState('');
@@ -9,6 +9,16 @@ const AddRoadmapPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => 
         subjectName: '',
         creditHours: ''
     });
+
+    // Determine the number of semesters based on the selected program
+    const getNumberOfSemesters = () => {
+        if (selectedProgram.toLowerCase().includes('bachelors')) {
+            return 8;
+        } else if (selectedProgram.toLowerCase().includes('adp') || selectedProgram.toLowerCase().includes('masters') || selectedProgram.toLowerCase().includes('phd')) {
+            return 4;
+        }
+        return 0; // Default if no match
+    };
 
     const handleSubmit = () => {
         addRoadmapEntry(term, year, semester, courseDetails);
@@ -48,7 +58,7 @@ const AddRoadmapPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => 
                     onChange={(e) => setSemester(e.target.value)}
                 >
                     <option value="">--Select Semester--</option>
-                    {Array.from({ length: selectedProgram.includes('masters') || selectedProgram.includes('phd') ? 4 : 8 || selectedProgram.includes('adp') ? 4 : 8 }, (_, i) => (
+                    {Array.from({ length: getNumberOfSemesters() }, (_, i) => (
                         <option key={i} value={i + 1}>Semester {i + 1}</option>
                     ))}
                 </select>
@@ -96,4 +106,4 @@ const AddRoadmapPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => 
     );
 };
 
-export default AddRoadmapPopup;
+export default ProgramPopup;
