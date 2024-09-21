@@ -24,7 +24,7 @@ const facultySlice = createSlice({
       .addCase(fetchFaculty.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
+      }) 
       // Create a new faculty member
       .addCase(createFaculty.pending, (state) => {
         state.loading = true;

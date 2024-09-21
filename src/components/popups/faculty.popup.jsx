@@ -4,6 +4,9 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
   const [name, setName] = useState('');
   const [qualification, setQualification] = useState('');
   const [position, setPosition] = useState('Dean');
+  const [email, setEmail] = useState('');
+  const [areaOfInterest, setAreaOfInterest] = useState('');
+  const [about, setAbout] = useState('');
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -11,6 +14,9 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
       setName(editingFaculty.name);
       setQualification(editingFaculty.qualification);
       setPosition(editingFaculty.position);
+      setEmail(editingFaculty.email || '');
+      setAreaOfInterest(editingFaculty.areaOfInterest || '');
+      setAbout(editingFaculty.about || '');
       setImage(editingFaculty.image || null);
     }
   }, [editingFaculty]);
@@ -28,6 +34,9 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
     formData.append('name', name);
     formData.append('qualification', qualification);
     formData.append('position', position);
+    formData.append('email', email);
+    formData.append('areaOfInterest', areaOfInterest);
+    formData.append('about', about);
     if (image) {
       formData.append('image', image);
     }
@@ -38,10 +47,14 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
       <div className='bg-white px-20 py-16 rounded-lg w-3/6'>
-        <h2 className='text-xl font-bold mb-4'>{editingFaculty ? 'Edit Faculty' : 'Add Faculty'}</h2>
+        <h2 className='text-xl font-bold mb-4'>
+          {editingFaculty ? 'Edit Faculty' : 'Add Faculty'}
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className='mb-4'>
-            <label className='block text-gray-700 text-sm font-bold mb-2'>Name</label>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Name
+            </label>
             <input
               type='text'
               value={name}
@@ -52,7 +65,9 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
           </div>
 
           <div className='mb-4'>
-            <label className='block text-gray-700 text-sm font-bold mb-2'>Qualification</label>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Qualification
+            </label>
             <input
               type='text'
               value={qualification}
@@ -63,7 +78,9 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
           </div>
 
           <div className='mb-4'>
-            <label className='block text-gray-700 text-sm font-bold mb-2'>Position</label>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Position
+            </label>
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value)}
@@ -80,7 +97,45 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
           </div>
 
           <div className='mb-4'>
-            <label className='block text-gray-700 text-sm font-bold mb-2'>Image</label>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Email
+            </label>
+            <input
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='w-full p-2 border border-gray-300 rounded'
+              required
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Area of Interest
+            </label>
+            <input
+              type='text'
+              value={areaOfInterest}
+              onChange={(e) => setAreaOfInterest(e.target.value)}
+              className='w-full p-2 border border-gray-300 rounded'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              About
+            </label>
+            <textarea
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+              className='w-full p-2 border border-gray-300 rounded'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Image
+            </label>
             <input
               type='file'
               accept='image/*'

@@ -9,7 +9,6 @@ import Faculty from "../pages/faculty/faculty";
 import Gallery from "../pages/gallery/gallery";
 import Programs from "../pages/programs/programs";
 import Settings from "../pages/settings/settings";
-import Profiles from "../pages/profiles/profiles";
 
 const PrivateRoutes = () => {
   return (
@@ -27,7 +26,6 @@ const PrivateRoutes = () => {
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/events" element={<Events />} />
           <Route path="/faculty" element={<Faculty />} />
-          <Route path="/profiles" element={<Profiles />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/programs" />} />

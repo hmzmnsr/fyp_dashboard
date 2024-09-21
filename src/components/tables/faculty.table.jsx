@@ -7,9 +7,12 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                 <thead>
                     <tr className='bg-gray-200'>
                         <th className='w-24 py-2 px-4 text-center'>Image</th>
-                        <th className='w-1/4 py-2 px-4 text-center'>Name</th>
-                        <th className='w-1/4 py-2 px-4 text-center'>Position</th>
-                        <th className='w-1/4 py-2 px-4 text-center'>Qualification</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Name</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Position</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Qualification</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Email</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Area of Interest</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>About</th>
                         <th className='w-1/6 py-2 px-4 text-center'>Actions</th>
                     </tr>
                 </thead>
@@ -31,6 +34,9 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                                 <td className='py-2 px-4 text-center'>{item.name}</td>
                                 <td className='py-2 px-4 text-center'>{item.position}</td>
                                 <td className='py-2 px-4 text-center'>{item.qualification}</td>
+                                <td className='py-2 px-4 text-center'>{item.email}</td>
+                                <td className='py-2 px-4 text-center'>{item.areaOfInterest}</td>
+                                <td className='py-2 px-4 text-center'>{item.about}</td>
                                 <td className='py-2 px-4 text-center'>
                                     <div className="flex justify-center space-x-4">
                                         <button
@@ -51,9 +57,7 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="5" className="py-4 text-center">
-                                No data available
-                            </td>
+                            <td colSpan="8" className="py-4 text-center">No data available</td>
                         </tr>
                     )}
                 </tbody>

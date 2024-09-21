@@ -51,17 +51,6 @@ const ActionButton = () => {
             </NavLink>
 
             <NavLink
-                to="/profiles"
-                className={({ isActive }) =>
-                    `flex items-center space-x-3 w-full py-4 pl-10 ${isActive ? 'bg-secondary-color' : 'hover:bg-secondary-color'
-                    }`
-                }
-            >
-                <FaChalkboardTeacher />
-                <span>Profiles</span>
-            </NavLink>
-
-            <NavLink
                 to="/gallery"
                 className={({ isActive }) =>
                     `flex items-center space-x-3 w-full py-4 pl-10 ${isActive ? 'bg-secondary-color' : 'hover:bg-secondary-color'

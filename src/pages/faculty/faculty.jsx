@@ -38,10 +38,18 @@ const Faculty = () => {
     setIsPopupOpen(true);
   };
 
-  const handleDelete = (id) => {
-    dispatch(deleteFaculty(id)).then(() => {
-      dispatch(fetchFaculty());
-    });
+  const handleDelete = (faculty) => {
+    if (faculty && faculty._id) {
+      dispatch(deleteFaculty(faculty._id))
+        .then(() => {
+          dispatch(fetchFaculty());
+        })
+        .catch((error) => {
+          console.error("Error deleting faculty:", error);
+        });
+    } else {
+      console.error("Faculty not found or undefined.");
+    }
   };
 
   return (

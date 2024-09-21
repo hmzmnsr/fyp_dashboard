@@ -55,4 +55,4 @@ export const deleteFaculty = createAsyncThunk(
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
-);
+); 

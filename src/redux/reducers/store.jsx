@@ -4,7 +4,8 @@ import systemReducer from '../reducers/system.reducer';
 import galleryReducer from '../reducers/gallery.reducer';
 import downloadReducer from '../reducers/download.reducer';
 import facultyReducer from '../reducers/faculty.reducer';
-import programsReducer from '../reducers/program.reducer';  // Ensure it matches slice naming convention
+import programsReducer from '../reducers/program.reducer';
+
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,6 @@ export const store = configureStore({
     gallery: galleryReducer,
     download: downloadReducer,
     faculty: facultyReducer,
-    programs: programsReducer, // Fix to match plural slice name
+    programs: programsReducer, 
   },
 });
