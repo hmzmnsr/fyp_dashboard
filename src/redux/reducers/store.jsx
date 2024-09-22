@@ -5,6 +5,7 @@ import galleryReducer from '../reducers/gallery.reducer';
 import downloadReducer from '../reducers/download.reducer';
 import facultyReducer from '../reducers/faculty.reducer';
 import programsReducer from '../reducers/program.reducer';
+import alumniReducer from '../reducers/alumni.reducer';
 
 
 export const store = configureStore({
@@ -15,5 +16,6 @@ export const store = configureStore({
     download: downloadReducer,
     faculty: facultyReducer,
     programs: programsReducer, 
+    alumni: alumniReducer,
   },
 });

@@ -1,5 +1,7 @@
-// src/components/DownloadTable.jsx
 import React from 'react';
+
+// Helper function to extract file name from the full path
+const getFileName = (filePath) => filePath.split(/(\\|\/)/).pop();
 
 const DownloadTable = ({ documents, onEdit, onDelete }) => {
     return (
@@ -19,13 +21,13 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                                 <td className="px-4 py-2">{doc.documentName}</td>
                                 <td className="px-4 py-2">
                                     {doc.attachment ? (
-                                        <a 
-                                            href={`http://localhost:8001/uploads/${doc.attachment}`} // Use filename only
-                                            target="_blank" 
+                                        <a
+                                            href={`http://localhost:8001/uploads/${doc.attachment}`} // Ensure correct path
+                                            target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-blue-500 hover:underline"
                                         >
-                                            {doc.attachment.split('_')[1]} {/* Display the file name */}
+                                            {getFileName(doc.attachment)} {/* Show only the file name */}
                                         </a>
                                     ) : (
                                         'No attachment'
@@ -33,7 +35,6 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                                 </td>
                                 <td className="px-4 py-2">
                                     <button
-                                        className="mr-2 px-6 py-2 bg-secondary-color hover:bg-blue-800 text-white rounded"
                                         onClick={() => onEdit(index)}
                                     >
                                         Edit

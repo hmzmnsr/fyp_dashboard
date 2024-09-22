@@ -7,7 +7,7 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                 <thead>
                     <tr className='bg-gray-200'>
                         <th className='w-24 py-2 px-4 text-center'>Image</th>
-                        <th className='w-1/6 py-2 px-4 text-center'>Name</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Faculty Name</th>
                         <th className='w-1/6 py-2 px-4 text-center'>Position</th>
                         <th className='w-1/6 py-2 px-4 text-center'>Qualification</th>
                         <th className='w-1/6 py-2 px-4 text-center'>Email</th>

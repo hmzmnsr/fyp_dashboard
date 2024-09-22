@@ -8,6 +8,7 @@ import Events from "../pages/events/events";
 import Faculty from "../pages/faculty/faculty";
 import Gallery from "../pages/gallery/gallery";
 import Programs from "../pages/programs/programs";
+import Alumni from "../pages/alumni/alumni";
 import Settings from "../pages/settings/settings";
 
 const PrivateRoutes = () => {
@@ -27,6 +28,7 @@ const PrivateRoutes = () => {
           <Route path="/events" element={<Events />} />
           <Route path="/faculty" element={<Faculty />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/alumni" element={<Alumni />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/programs" />} />
         </Routes>
