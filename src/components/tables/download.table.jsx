@@ -3,7 +3,7 @@ import React from 'react';
 const DownloadTable = ({ documents, onEdit, onDelete }) => {
     return (
         <div className="py-5">
-            <table className="min-w-full table-fixed bg-white">
+            <table className="min-w-full table-fixed bg-white shadow-md rounded-lg">
                 <thead className="bg-gray-200 text-center">
                     <tr>
                         <th className="w-1/3 px-4 py-2">Document Name</th>
@@ -14,7 +14,7 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                 <tbody className="text-center">
                     {documents.length > 0 ? (
                         documents.map((doc, index) => (
-                            <tr key={index} className="border-b">
+                            <tr key={index} className="bg-gray-50 hover:bg-gray-100 border-b">
                                 <td className="px-4 py-2">{doc.documentName}</td>
                                 <td className="px-4 py-2">
                                     {doc.attachment ? (
@@ -59,4 +59,4 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
     );
 };
 
-export default DownloadTable;
+export default DownloadTable; 

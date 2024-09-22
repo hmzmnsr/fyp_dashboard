@@ -4,7 +4,7 @@ const ProgramTable = ({ semester, roadmap, onEdit, onDelete }) => {
     return (
         <div className="pb-8">
             <h4 className="text-xl font-semibold mb-2">Semester {semester}</h4>
-            <table className="min-w-full table-fixed">
+            <table className="min-w-full table-fixed bg-white shadow-md rounded-lg">
                 <thead className="bg-gray-200 text-left">
                     <tr>
                         <th className="w-1/4 px-4 py-2 text-center">Course Code</th>

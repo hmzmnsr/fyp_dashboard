@@ -36,7 +36,8 @@ export const updateDownload = createAsyncThunk(
     'downloads/updateDownload',
     async ({ id, formData }, { rejectWithValue }) => {
         try {
-            const response = await api.patch(`/downloads/${id}`, formData, {
+            console.log(`Updating download at: /downloads/${id}`); // Log the URL
+            const response = await api.put(`/downloads/${id}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             const updatedDownload = response.data.data;
@@ -59,3 +60,4 @@ export const deleteDownload = createAsyncThunk(
         }
     }
 );
+ 

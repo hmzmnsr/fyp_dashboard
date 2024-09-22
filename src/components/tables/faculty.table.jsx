@@ -3,7 +3,7 @@ import React from 'react';
 const FacultyTable = ({ data, onEdit, onDelete }) => {
     return (
         <div className='overflow-x-auto mt-2'>
-            <table className='min-w-full bg-white table-fixed'>
+            <table className='min-w-full table-fixed bg-white shadow-md rounded-lg'>
                 <thead>
                     <tr className='bg-gray-200'>
                         <th className='w-24 py-2 px-4 text-center'>Image</th>
@@ -19,7 +19,7 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                 <tbody>
                     {data.length > 0 ? (
                         data.map((item, index) => (
-                            <tr key={index} className='bg-gray-50 hover:bg-gray-100'>
+                            <tr key={index} className='bg-gray-50 hover:bg-gray-100 border-b'>
                                 <td className='py-2 px-4 text-center'>
                                     {item.image ? (
                                         <img

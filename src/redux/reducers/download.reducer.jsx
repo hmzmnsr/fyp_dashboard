@@ -70,4 +70,4 @@ const downloadSlice = createSlice({
     },
 });
 
-export default downloadSlice.reducer;
+export default downloadSlice.reducer; 

@@ -13,7 +13,7 @@ const AlumniTable = ({ alumnis = [], onEdit, onDelete }) => {
                 <tbody>
                     {alumnis.length > 0 ? (
                         alumnis.map((alumni, index) => (
-                            <tr key={index} className='border-b text-center'>
+                            <tr key={index} className='bg-gray-50 hover:bg-gray-100 border-b text-center'>
                                 <td className='px-4 py-2'>{alumni.class}</td>
                                 <td className='px-4 py-2'>{alumni.batch}</td>
                                 <td className='px-4 py-2'>{alumni.totalStudents}</td>

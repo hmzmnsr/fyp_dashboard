@@ -54,4 +54,5 @@ const AddDownloadPopup = ({ setShowPopup, addDocument, documentToEdit }) => {
     );
 };
 
-export default AddDownloadPopup;
+
+export default AddDownloadPopup; 

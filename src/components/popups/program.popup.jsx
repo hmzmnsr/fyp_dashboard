@@ -10,14 +10,13 @@ const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
         creditHours: ''
     });
 
-    // Determine the number of semesters based on the selected program
     const getNumberOfSemesters = () => {
         if (selectedProgram.toLowerCase().includes('bachelors')) {
             return 8;
         } else if (selectedProgram.toLowerCase().includes('adp') || selectedProgram.toLowerCase().includes('masters') || selectedProgram.toLowerCase().includes('phd')) {
             return 4;
         }
-        return 0; // Default if no match
+        return 0;
     };
 
     const handleSubmit = () => {

@@ -3,7 +3,7 @@ import React from 'react';
 const GalleryTable = ({ albums = [], onEdit, onDelete }) => {
     return (
         <div className='py-5'>
-            <table className='min-w-full table-fixed bg-white'>
+            <table className='min-w-full table-fixed bg-white shadow-md rounded-lg'>
                 <thead>
                     <tr className='bg-gray-200 text-left'>
                         <th className='w-1/4 px-4 py-2 text-center'>Album Name</th>
@@ -15,7 +15,7 @@ const GalleryTable = ({ albums = [], onEdit, onDelete }) => {
                 <tbody>
                     {albums.length > 0 ? (
                         albums.map((album, index) => (
-                            <tr key={index} className='border-b'>
+                            <tr key={index} className='bg-gray-50 hover:bg-gray-100 border-b'>
                                 <td className='px-4 py-2 text-center'>{album.name}</td>
                                 <td className='px-4 py-2 text-center'>
                                     {album.coverPhoto ? (
