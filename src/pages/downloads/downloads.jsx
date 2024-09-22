@@ -10,7 +10,7 @@ const Downloads = () => {
     const [editDocumentIndex, setEditDocumentIndex] = useState(null);
 
     const dispatch = useDispatch();
-    const { downloads, loading, error } = useSelector((state) => state.download); // Updated selector
+    const { downloads, loading, error } = useSelector((state) => state.download);
 
     useEffect(() => {
         dispatch(fetchDownloads());
@@ -76,4 +76,4 @@ const Downloads = () => {
     );
 };
 
-export default Downloads;
+export default Downloads; 

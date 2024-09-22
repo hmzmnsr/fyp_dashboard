@@ -165,4 +165,4 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
   );
 };
 
-export default AddFacultyPopup;
+export default AddFacultyPopup; 

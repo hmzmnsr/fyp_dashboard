@@ -1,23 +1,13 @@
 import api from "../../services/api";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// Helper function to extract file name from the file path
-const getFileName = (filePath) => {
-    const fullFileName = filePath.split(/(\\|\/)/).pop();
-    return fullFileName.includes('_') ? fullFileName.split('_').pop() : fullFileName;
-};
-
-// Fetch all downloads and strip file paths to keep only file names for frontend display
+// Fetch all downloads
 export const fetchDownloads = createAsyncThunk(
     'downloads/fetchDownloads',
     async (_, { rejectWithValue }) => {
         try {
             const response = await api.get('/downloads');
-            // Map the response to include file name only
-            const downloads = response.data.map(download => ({
-                ...download,
-                attachment: getFileName(download.attachment), // Extract file name for display
-            }));
+            const downloads = response.data; 
             return downloads;
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : 'Network error');
@@ -25,7 +15,7 @@ export const fetchDownloads = createAsyncThunk(
     }
 );
 
-// Create a new download with multipart form data (handling file upload)
+// Create a new download
 export const createDownload = createAsyncThunk(
     'downloads/createDownload',
     async (formData, { rejectWithValue }) => {
@@ -33,11 +23,7 @@ export const createDownload = createAsyncThunk(
             const response = await api.post('/downloads', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            // Return the created download with file name extracted from full path
-            const createdDownload = {
-                ...response.data.data,
-                attachment: getFileName(response.data.data.attachment), // Keep only the file name
-            };
+            const createdDownload = response.data.data;
             return createdDownload;
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : 'Network error');
@@ -45,7 +31,7 @@ export const createDownload = createAsyncThunk(
     }
 );
 
-// Update an existing download with file upload support
+// Update an existing download
 export const updateDownload = createAsyncThunk(
     'downloads/updateDownload',
     async ({ id, formData }, { rejectWithValue }) => {
@@ -53,11 +39,7 @@ export const updateDownload = createAsyncThunk(
             const response = await api.patch(`/downloads/${id}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            // Return the updated download with file name extracted from full path
-            const updatedDownload = {
-                ...response.data.data,
-                attachment: getFileName(response.data.data.attachment), // Extract file name
-            };
+            const updatedDownload = response.data.data;
             return updatedDownload;
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : 'Network error');
@@ -65,13 +47,13 @@ export const updateDownload = createAsyncThunk(
     }
 );
 
-// Delete a download by ID
+// Delete a download
 export const deleteDownload = createAsyncThunk(
     'downloads/deleteDownload',
     async (id, { rejectWithValue }) => {
         try {
             await api.delete(`/downloads/${id}`);
-            return id; // Return the ID to remove it from the Redux store
+            return id;
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : 'Network error');
         }

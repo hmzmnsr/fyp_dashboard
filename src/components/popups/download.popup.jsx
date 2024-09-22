@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const AddDownloadPopup = ({ setShowPopup, addDocument, documentToEdit }) => {
     const [documentName, setDocumentName] = useState(documentToEdit ? documentToEdit.documentName : '');
-    const [attachment, setAttachment] = useState(documentToEdit ? documentToEdit.attachment : null);
+    const [attachment, setAttachment] = useState(null);
 
     const handleSubmit = () => {
         if (documentName && attachment) {

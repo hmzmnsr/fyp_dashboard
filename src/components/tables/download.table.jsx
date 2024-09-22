@@ -1,8 +1,5 @@
 import React from 'react';
 
-// Helper function to extract file name from the full path
-const getFileName = (filePath) => filePath.split(/(\\|\/)/).pop();
-
 const DownloadTable = ({ documents, onEdit, onDelete }) => {
     return (
         <div className="py-5">
@@ -22,12 +19,12 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                                 <td className="px-4 py-2">
                                     {doc.attachment ? (
                                         <a
-                                            href={`http://localhost:8001/uploads/${doc.attachment}`} // Ensure correct path
+                                            href={`http://localhost:8001/uploads/${doc.attachment}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-blue-500 hover:underline"
                                         >
-                                            {getFileName(doc.attachment)} {/* Show only the file name */}
+                                            {doc.attachment}
                                         </a>
                                     ) : (
                                         'No attachment'
@@ -35,6 +32,7 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                                 </td>
                                 <td className="px-4 py-2">
                                     <button
+                                        className='mr-2 px-6 py-2 bg-secondary-color hover:bg-blue-800 text-white rounded'
                                         onClick={() => onEdit(index)}
                                     >
                                         Edit
@@ -48,7 +46,7 @@ const DownloadTable = ({ documents, onEdit, onDelete }) => {
                                 </td>
                             </tr>
                         ))
-                    ) : (
+                    ) : ( 
                         <tr>
                             <td colSpan="3" className="py-4 text-center">
                                 No documents available

@@ -19,7 +19,7 @@ const downloadSlice = createSlice({
             })
             .addCase(fetchDownloads.fulfilled, (state, action) => {
                 state.loading = false;
-                state.downloads = action.payload; // Payload already has the file name
+                state.downloads = action.payload;
             })
             .addCase(fetchDownloads.rejected, (state, action) => {
                 state.loading = false;
@@ -32,7 +32,7 @@ const downloadSlice = createSlice({
             })
             .addCase(createDownload.fulfilled, (state, action) => {
                 state.loading = false;
-                state.downloads.push(action.payload); // Payload already has the file name
+                state.downloads.push(action.payload);
             })
             .addCase(createDownload.rejected, (state, action) => {
                 state.loading = false;
@@ -47,7 +47,7 @@ const downloadSlice = createSlice({
                 state.loading = false;
                 const index = state.downloads.findIndex(download => download._id === action.payload._id);
                 if (index !== -1) {
-                    state.downloads[index] = action.payload; // Payload already has the file name
+                    state.downloads[index] = action.payload;
                 }
             })
             .addCase(updateDownload.rejected, (state, action) => {

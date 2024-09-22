@@ -68,3 +68,4 @@ const facultySlice = createSlice({
 });
 
 export default facultySlice.reducer;
+ 
