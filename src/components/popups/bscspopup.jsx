@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
+const BSCSPopup = ({ setShowPopup, addRoadmapEntry, editingCourse }) => {
     const [term, setTerm] = useState('fall');
     const [year, setYear] = useState('2023');
     const [semester, setSemester] = useState('');
@@ -10,14 +10,11 @@ const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
         creditHours: ''
     });
 
-    const getNumberOfSemesters = () => {
-        if (selectedProgram.toLowerCase().includes('bachelors')) {
-            return 8;
-        } else if (selectedProgram.toLowerCase().includes('adp') || selectedProgram.toLowerCase().includes('masters') || selectedProgram.toLowerCase().includes('phd')) {
-            return 4;
+    useEffect(() => {
+        if (editingCourse) {
+            setCourseDetails(editingCourse);
         }
-        return 0;
-    };
+    }, [editingCourse]);
 
     const handleSubmit = () => {
         addRoadmapEntry(term, year, semester, courseDetails);
@@ -27,7 +24,7 @@ const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white px-20 py-10 rounded-lg w-3/6">
-                <h2 className="text-2xl font-bold mb-4">Add Roadmap</h2>
+                <h2 className="text-2xl font-bold mb-4">{editingCourse ? "Edit Course" : "Add Roadmap - BSC in Computer Science"}</h2>
 
                 <label className="block mb-2">Select Term:</label>
                 <select
@@ -57,7 +54,7 @@ const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
                     onChange={(e) => setSemester(e.target.value)}
                 >
                     <option value="">--Select Semester--</option>
-                    {Array.from({ length: getNumberOfSemesters() }, (_, i) => (
+                    {Array.from({ length: 8 }, (_, i) => (
                         <option key={i} value={i + 1}>Semester {i + 1}</option>
                     ))}
                 </select>
@@ -97,7 +94,7 @@ const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
                         className="px-8 py-2 bg-secondary-color hover:bg-blue-800 text-white rounded"
                         onClick={handleSubmit}
                     >
-                        Add
+                        {editingCourse ? "Update" : "Add"}
                     </button>
                 </div>
             </div>
@@ -105,4 +102,4 @@ const ProgramPopup = ({ selectedProgram, setShowPopup, addRoadmapEntry }) => {
     );
 };
 
-export default ProgramPopup;
+export default BSCSPopup;
