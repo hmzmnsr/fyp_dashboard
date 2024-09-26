@@ -4,11 +4,12 @@ import FlexContainer from "../../components/containers/flex.container";
 import BSSEPopup from "../../components/popups/bsse.popup";
 import UpdateCoursePopup from "../../components/popups/bsse.update.popup";
 import BSSETable from "../../components/tables/bsse.table";
-import { fetchAllBSSE } from "../../redux/actions/bsse.action";
+import { fetchAllBSSE, deleteBSSE } from "../../redux/actions/bsse.action";
 
 const BSSE = () => {
     const dispatch = useDispatch();
     const [roadmap, setRoadmap] = useState({});
+    const [roadmapIds, setRoadmapIds] = useState({});
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [showEditPopup, setShowEditPopup] = useState(false);
     const [editingCourse, setEditingCourse] = useState(null);
@@ -22,17 +23,27 @@ const BSSE = () => {
                     const roadmapData = response.payload.reduce((acc, entry) => {
                         const key = `${entry.term} ${entry.year}`;
                         if (!acc[key]) acc[key] = {};
-
+                        
                         entry.courses.forEach(course => {
                             if (!acc[key][entry.semester]) acc[key][entry.semester] = [];
-
-                            if (!acc[key][entry.semester].some(c => c.courseCode === course.courseCode)) {
-                                acc[key][entry.semester].push({ ...course, roadmapId: entry._id });
-                            }
+                            acc[key][entry.semester].push({ ...course, roadmapId: entry._id });
                         });
+
+                        if (!acc[key].roadmapId) {
+                            acc[key].roadmapId = entry._id;
+                        }
+
                         return acc;
                     }, {});
+
+                    const roadmapIdData = response.payload.reduce((acc, entry) => {
+                        const key = `${entry.term} ${entry.year}`;
+                        acc[key] = entry._id;
+                        return acc;
+                    }, {});
+
                     setRoadmap(roadmapData);
+                    setRoadmapIds(roadmapIdData);
                 } else {
                     setError("Failed to load roadmap data.");
                 }
@@ -65,6 +76,27 @@ const BSSE = () => {
         setShowEditPopup(true);
     };
 
+    const handleDeleteRoadmap = async (roadmapId) => {
+        try {
+            const response = await dispatch(deleteBSSE(roadmapId));
+            if (response.type === 'bsse/delete/fulfilled') {
+                setRoadmap(prevRoadmap => {
+                    const updatedRoadmap = { ...prevRoadmap };
+                    Object.keys(updatedRoadmap).forEach(termYear => {
+                        if (roadmapIds[termYear] === roadmapId) {
+                            delete updatedRoadmap[termYear];
+                        }
+                    });
+                    return updatedRoadmap;
+                });
+            } else {
+                setError("Failed to delete roadmap.");
+            }
+        } catch (error) {
+            setError("Error deleting roadmap.");
+        }
+    };
+
     const renderRoadmapContent = () => {
         return (
             <>
@@ -73,9 +105,20 @@ const BSSE = () => {
                 ) : (
                     Object.keys(roadmap).map((termYear) => (
                         <div key={termYear} className='my-10 px-10 py-5 bg-gray-200'>
-                            <h3 className="text-2xl font-bold mb-8 pb-4 pt-5 text-primary-color border-b-4 border-red-500">
-                                {termYear.charAt(0).toUpperCase() + termYear.slice(1)}
-                            </h3>
+                            <div className="grid grid-cols-12 border-b-4 border-red-500 items-center">
+                                <h3 className="text-2xl font-bold pb-4 pt-5 text-primary-color col-span-8">
+                                    {termYear.charAt(0).toUpperCase() + termYear.slice(1)}
+                                </h3>
+                                <div className="col-span-4 flex justify-end mr-2">
+                                    <button
+                                        className="h-10 w-24 rounded bg-red-500 text-white"
+                                        onClick={() => handleDeleteRoadmap(roadmapIds[termYear])}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+    
                             {Object.keys(roadmap[termYear]).map((sem) => (
                                 roadmap[termYear][sem] && Array.isArray(roadmap[termYear][sem]) ? (
                                     <BSSETable
@@ -86,9 +129,7 @@ const BSSE = () => {
                                         setRoadmap={setRoadmap}
                                         termYear={termYear}
                                     />
-                                ) : (
-                                    <p key={sem}>No courses available for this semester.</p>
-                                )
+                                ) : null
                             ))}
                         </div>
                     ))
@@ -96,6 +137,7 @@ const BSSE = () => {
             </>
         );
     };
+    
 
     return (
         <FlexContainer className="flex-col w-full">

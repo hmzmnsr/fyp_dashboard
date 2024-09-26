@@ -93,10 +93,10 @@ export const updateCourseInMSCS = createAsyncThunk(
 
 
 export const deleteCourseInMSCS = createAsyncThunk(
-  'bscs/deleteCourse',
+  'mscs/deleteCourse',
   async ({ roadmapId, courseId }, { rejectWithValue }) => {
       try {
-          await api.delete(`/bscs/${roadmapId}/course/${courseId}`, {
+          await api.delete(`/mscs/${roadmapId}/course/${courseId}`, {
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('token')}`,
               },
@@ -107,6 +107,3 @@ export const deleteCourseInMSCS = createAsyncThunk(
       }
   }
 );
-
-
-   
