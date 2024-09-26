@@ -90,8 +90,6 @@ export const updateCourseInBSCS = createAsyncThunk(
   }
 );
 
-
-
 export const deleteCourseInBSCS = createAsyncThunk(
   'bscs/deleteCourse',
   async ({ roadmapId, courseId }, { rejectWithValue }) => {

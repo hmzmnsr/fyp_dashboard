@@ -36,19 +36,27 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
                     const termYear = `${editingCourse.term} ${editingCourse.year}`;
                     const semester = editingCourse.semester;
     
-                    const updatedCourses = prevRoadmap[termYear]?.[semester]?.map((course) =>
-                        course._id === courseId ? { ...course, ...courseDetails } : course
-                    );
+                    // Check if the termYear and semester exist in the roadmap
+                    if (prevRoadmap[termYear] && prevRoadmap[termYear][semester]) {
+                        // Map over the courses to find the one to update
+                        const updatedCourses = prevRoadmap[termYear][semester].map((course) =>
+                            course._id === courseId ? { ...course, ...courseDetails } : course
+                        );
     
-                    return {
-                        ...prevRoadmap,
-                        [termYear]: {
-                            ...prevRoadmap[termYear],
-                            [semester]: updatedCourses
-                        }
-                    };
+                        // Return the updated roadmap with the updated courses
+                        return {
+                            ...prevRoadmap,
+                            [termYear]: {
+                                ...prevRoadmap[termYear],
+                                [semester]: updatedCourses
+                            }
+                        };
+                    }
+    
+                    // If for some reason the termYear or semester doesn't exist, just return the previous state
+                    return prevRoadmap;
                 });
-        
+    
                 resetForm();
             } else {
                 setError('Failed to update course.');
@@ -61,6 +69,7 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
         setShowPopup(false);
         setEditingCourse(null);
     };
+    
     
     
 
