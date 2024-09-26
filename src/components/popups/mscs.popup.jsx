@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createBSCS } from '../../redux/actions/bscs.action';
+import { createMSCS } from '../../redux/actions/mscs.action';
 
-const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
+const MSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
     const dispatch = useDispatch();
     const [term, setTerm] = useState('fall');
     const [year, setYear] = useState('2023');
@@ -27,6 +27,7 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
     };
 
     const handleSubmit = async () => {
+
         if (!courseDetails.courseCode || !courseDetails.subjectName || !courseDetails.creditHours || !semester) {
             setError('All fields must be filled.');
             return;
@@ -39,12 +40,12 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
                 semester,
                 courses: [courseDetails],
             };
-            const response = await dispatch(createBSCS(newCourseData));
+            const response = await dispatch(createMSCS(newCourseData));
 
-            if (response?.type === 'bscs/create/fulfilled') {
+            if (response?.type === 'mscs/create/fulfilled') {
                 addRoadmapEntry(term, year, semester, courseDetails);
                 resetForm();
-                setShowPopup(false);
+                setShowPopup(false); 
             } else {
                 setError(response?.error?.message || 'Failed to create course.');
             }
@@ -87,7 +88,7 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
                     onChange={(e) => setSemester(e.target.value)}
                 >
                     <option value="">--Select Semester--</option>
-                    {Array.from({ length: 8 }, (_, i) => (
+                    {Array.from({ length: 4 }, (_, i) => (
                         <option key={i} value={i + 1}>Semester {i + 1}</option>
                     ))}
                 </select>
@@ -120,7 +121,7 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
 
                 <div className="flex justify-end">
                     <button
-                        className="px-5 py-2 bg-gray-300 text-black hover:bg-gray-400 hover:text-white rounded mr-4"
+                        className="px-5 py-2 bg-gray-300 text-black hover:bg-gray-400 rounded mr-4"
                         onClick={() => {
                             resetForm();
                             setShowPopup(false);
@@ -140,4 +141,4 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
     );
 };
 
-export default BSCSPopup;
+export default MSCSPopup;

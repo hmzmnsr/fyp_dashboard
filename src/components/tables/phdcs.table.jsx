@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteCourseInBSCS } from "../../redux/actions/bscs.action";
+import { deleteCourseInPHDCS } from "../../redux/actions/phdcs.action";
 
-const BSCSTable = ({ semester, roadmap, onEdit, setRoadmap, termYear }) => {
+const PHDCSTable = ({ semester, roadmap, onEdit, setRoadmap, termYear }) => {
     const dispatch = useDispatch();
 
     const handleDeleteCourse = async (course) => {
@@ -10,9 +10,9 @@ const BSCSTable = ({ semester, roadmap, onEdit, setRoadmap, termYear }) => {
         const roadmapId = course.roadmapId;
 
         try {
-            const response = await dispatch(deleteCourseInBSCS({ roadmapId, courseId }));
+            const response = await dispatch(deleteCourseInPHDCS({ roadmapId, courseId }));
 
-            if (response.type === 'bscs/deleteCourse/fulfilled') {
+            if (response.type === 'phdcs/deleteCourse/fulfilled') {
                 setRoadmap(prevRoadmap => {
                     const updatedCourses = prevRoadmap[termYear][semester].filter(c => c._id !== courseId);
                     return {
@@ -75,4 +75,4 @@ const BSCSTable = ({ semester, roadmap, onEdit, setRoadmap, termYear }) => {
     );
 };
 
-export default BSCSTable;
+export default PHDCSTable;

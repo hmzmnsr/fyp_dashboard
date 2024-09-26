@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import FlexContainer from "../../components/containers/flex.container";
-import BSCSPopup from "../../components/popups/bscspopup";  // Add Popup
-import UpdateCoursePopup from "../../components/popups/updatecoursepopup";
+import BSCSPopup from "../../components/popups/bscspopup";
+import UpdateCoursePopup from "../../components/popups/bscsupdatepopup";
 import BSCSTable from "../../components/tables/bscs.table";
-import { fetchAllBSCS, deleteCourseInBSCS } from "../../redux/actions/bscs.action";
+import { fetchAllBSCS } from "../../redux/actions/bscs.action";
 
 const BSCS = () => {
     const dispatch = useDispatch();
     const [roadmap, setRoadmap] = useState({});
-    const [showAddPopup, setShowAddPopup] = useState(false);  // For Add Popup
-    const [showEditPopup, setShowEditPopup] = useState(false);  // For Edit Popup
+    const [showAddPopup, setShowAddPopup] = useState(false);
+    const [showEditPopup, setShowEditPopup] = useState(false);
     const [editingCourse, setEditingCourse] = useState(null);
     const [error, setError] = useState(null);
-
-    useSelector((state) => state.bscsData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,7 +22,7 @@ const BSCS = () => {
                     const roadmapData = response.payload.reduce((acc, entry) => {
                         const key = `${entry.term} ${entry.year}`;
                         if (!acc[key]) acc[key] = {};
-                        
+
                         entry.courses.forEach(course => {
                             if (!acc[key][entry.semester]) acc[key][entry.semester] = [];
 
@@ -42,7 +40,7 @@ const BSCS = () => {
                 setError("Error fetching roadmap data.");
             }
         };
-    
+
         fetchData();
     }, [dispatch]);
 
@@ -58,35 +56,13 @@ const BSCS = () => {
     };
 
     const handleAddRoadmap = () => {
-        setEditingCourse(null); 
-        setShowAddPopup(true);  // Show add popup
+        setEditingCourse(null);
+        setShowAddPopup(true);
     };
 
     const handleEditCourse = (termYear, semester, course) => {
         setEditingCourse(course);
-        setShowEditPopup(true);  // Show edit popup
-    };
-
-    const handleDeleteCourse = async (termYear, semester, course) => {
-        const courseId = course._id;
-        const roadmapId = course.roadmapId;
-        try {
-            const response = await dispatch(deleteCourseInBSCS({ roadmapId, courseId }));
-            if (response.type === 'bscs/deleteCourse/fulfilled') {
-                const updatedCourses = roadmap[termYear][semester].filter(c => c._id !== courseId);
-                setRoadmap(prevRoadmap => ({
-                    ...prevRoadmap,
-                    [termYear]: {
-                        ...prevRoadmap[termYear],
-                        [semester]: updatedCourses,
-                    },
-                }));
-            } else {
-                setError("Failed to delete course.");
-            }
-        } catch (error) {
-            setError("Failed to delete course.");
-        }
+        setShowEditPopup(true);
     };
 
     const renderRoadmapContent = () => {
@@ -96,23 +72,24 @@ const BSCS = () => {
                     <div className="text-center py-4">No roadmap data available</div>
                 ) : (
                     Object.keys(roadmap).map((termYear) => (
-    <div key={termYear} className='my-10 px-10 py-5 bg-gray-200'>
-        <h3 className="text-2xl font-bold mb-8 pb-4 pt-5 text-primary-color border-b-4 border-red-500">
-            {termYear.charAt(0).toUpperCase() + termYear.slice(1)}
-        </h3>
-        {Object.keys(roadmap[termYear]).map((sem) => (
-            roadmap[termYear][sem] && Array.isArray(roadmap[termYear][sem]) ? (
-                <BSCSTable
-                    key={sem}
-                    semester={sem}
-                    roadmap={roadmap[termYear][sem]}
-                    onEdit={(course) => handleEditCourse(termYear, sem, course)}
-                    onDelete={(course) => handleDeleteCourse(termYear, sem, course)}
-                />
-            ) : (
-                <p key={sem}>No courses available for this semester.</p>
-            )
-        ))}
+                        <div key={termYear} className='my-10 px-10 py-5 bg-gray-200'>
+                            <h3 className="text-2xl font-bold mb-8 pb-4 pt-5 text-primary-color border-b-4 border-red-500">
+                                {termYear.charAt(0).toUpperCase() + termYear.slice(1)}
+                            </h3>
+                            {Object.keys(roadmap[termYear]).map((sem) => (
+                                roadmap[termYear][sem] && Array.isArray(roadmap[termYear][sem]) ? (
+                                    <BSCSTable
+                                        key={sem}
+                                        semester={sem}
+                                        roadmap={roadmap[termYear][sem]}
+                                        onEdit={(course) => handleEditCourse(termYear, sem, course)}
+                                        setRoadmap={setRoadmap}  // Pass the setRoadmap function to BSCSTable
+                                        termYear={termYear}      // Pass termYear to BSCSTable
+                                    />
+                                ) : (
+                                    <p key={sem}>No courses available for this semester.</p>
+                                )
+                            ))}
                         </div>
                     ))
                 )}
@@ -142,18 +119,18 @@ const BSCS = () => {
 
             {showAddPopup && (
                 <BSCSPopup
-                    setShowPopup={setShowAddPopup}  // Use setShowAddPopup
+                    setShowPopup={setShowAddPopup}
                     addRoadmapEntry={addRoadmapEntry}
                 />
             )}
 
             {showEditPopup && (
                 <UpdateCoursePopup
-                    setShowPopup={setShowEditPopup}  // Use setShowEditPopup
+                    setShowPopup={setShowEditPopup}
                     editingCourse={editingCourse}
                     addRoadmapEntry={addRoadmapEntry}
                     setEditingCourse={setEditingCourse}
-                    setRoadmap={setRoadmap}  // Pass setRoadmap as a prop
+                    setRoadmap={setRoadmap}
                 />
             )}
 
