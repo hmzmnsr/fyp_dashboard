@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
-export const fetchAllBSCS = createAsyncThunk(
-  'bscs/fetchAll',
+export const fetchAllMSCS = createAsyncThunk(
+  'mscs/fetchAll',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/bscs');
+      const response = await api.get('/mscs');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -13,11 +13,11 @@ export const fetchAllBSCS = createAsyncThunk(
   }
 );
 
-export const getBSCSById = createAsyncThunk(
-  'bscs/getById',
+export const getMSCSById = createAsyncThunk(
+  'mscs/getById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/bscs/${id}`);
+      const response = await api.get(`/mscs/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -25,11 +25,11 @@ export const getBSCSById = createAsyncThunk(
   }
 );
 
-export const createBSCS = createAsyncThunk(
-  'bscs/create',
-  async (bscsData, { rejectWithValue }) => {
+export const createMSCS = createAsyncThunk(
+  'mscs/create',
+  async (mscsData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/bscs', bscsData, {
+      const response = await api.post('/mscs', mscsData, {
         headers: { 'Content-Type': 'application/json' },
       });
       return response.data;
@@ -39,11 +39,11 @@ export const createBSCS = createAsyncThunk(
   }
 );
 
-export const updateBSCS = createAsyncThunk(
-  'bscs/update',
-  async ({ _id, bscsData }, { rejectWithValue }) => {
+export const updateMSCS = createAsyncThunk(
+  'mscs/update',
+  async ({ _id, mscsData }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/bscs/${_id}`, bscsData, {
+      const response = await api.put(`/mscs/${_id}`, mscsData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -51,48 +51,48 @@ export const updateBSCS = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : 'Failed to update BSCS roadmap');
+      return rejectWithValue(error.response ? error.response.data : 'Failed to update MSCS roadmap');
     }
   }
 );
 
-export const deleteBSCS = createAsyncThunk(
-  'bscs/delete',
+export const deleteMSCS = createAsyncThunk(
+  'mscs/delete',
   async (_id, { rejectWithValue }) => {
     try {
-      await api.delete(`/bscs/${_id}`, {
+      await api.delete(`/mscs/${_id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
       return _id; 
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : 'Failed to delete BSCS roadmap');
+      return rejectWithValue(error.response ? error.response.data : 'Failed to delete MSCS roadmap');
     }
   }
 );
 
-export const updateCourseInBSCS = createAsyncThunk(
-  'bscs/updateCourse',
+export const updateCourseInMSCS = createAsyncThunk(
+  'mscs/updateCourse',
   async ({ roadmapId, courseId, courseData }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/bscs/${roadmapId}/course/${courseId}`, courseData, {
+      const response = await api.put(`/mscs/${roadmapId}/course/${courseId}`, courseData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      
+
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : 'Failed to update course in BSCS roadmap');
+      return rejectWithValue(error.response ? error.response.data : 'Failed to update course in MSCS roadmap');
     }
   }
 );
 
 
 
-export const deleteCourseInBSCS = createAsyncThunk(
+export const deleteCourseInMSCS = createAsyncThunk(
   'bscs/deleteCourse',
   async ({ roadmapId, courseId }, { rejectWithValue }) => {
       try {

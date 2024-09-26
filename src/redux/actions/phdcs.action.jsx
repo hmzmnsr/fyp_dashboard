@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
-export const fetchAllBSCS = createAsyncThunk(
-  'bscs/fetchAll',
+export const fetchAllPHDCS = createAsyncThunk(
+  'phdcs/fetchAll',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/bscs');
+      const response = await api.get('/phdcs');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -13,11 +13,11 @@ export const fetchAllBSCS = createAsyncThunk(
   }
 );
 
-export const getBSCSById = createAsyncThunk(
-  'bscs/getById',
+export const getPHDCSById = createAsyncThunk(
+  'phdcs/getById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/bscs/${id}`);
+      const response = await api.get(`/phdcs/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -25,11 +25,11 @@ export const getBSCSById = createAsyncThunk(
   }
 );
 
-export const createBSCS = createAsyncThunk(
-  'bscs/create',
-  async (bscsData, { rejectWithValue }) => {
+export const createPHDCS = createAsyncThunk(
+  'phdcs/create',
+  async (phdcsData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/bscs', bscsData, {
+      const response = await api.post('/phdcs', phdcsData, {
         headers: { 'Content-Type': 'application/json' },
       });
       return response.data;
@@ -39,11 +39,11 @@ export const createBSCS = createAsyncThunk(
   }
 );
 
-export const updateBSCS = createAsyncThunk(
-  'bscs/update',
-  async ({ _id, bscsData }, { rejectWithValue }) => {
+export const updatePHDCS = createAsyncThunk(
+  'phdcs/update',
+  async ({ _id, phdcsData }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/bscs/${_id}`, bscsData, {
+      const response = await api.put(`/phdcs/${_id}`, phdcsData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -51,59 +51,59 @@ export const updateBSCS = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : 'Failed to update BSCS roadmap');
+      return rejectWithValue(error.response ? error.response.data : 'Failed to update PHDCS roadmap');
     }
   }
 );
 
-export const deleteBSCS = createAsyncThunk(
-  'bscs/delete',
+export const deletePHDCS = createAsyncThunk(
+  'phdcs/delete',
   async (_id, { rejectWithValue }) => {
     try {
-      await api.delete(`/bscs/${_id}`, {
+      await api.delete(`/phdcs/${_id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
       return _id; 
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : 'Failed to delete BSCS roadmap');
+      return rejectWithValue(error.response ? error.response.data : 'Failed to delete PHDCS roadmap');
     }
   }
 );
 
-export const updateCourseInBSCS = createAsyncThunk(
-  'bscs/updateCourse',
+export const updateCourseInPHDCS = createAsyncThunk(
+  'phdcs/updateCourse',
   async ({ roadmapId, courseId, courseData }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/bscs/${roadmapId}/course/${courseId}`, courseData, {
+      const response = await api.put(`/phdcs/${roadmapId}/course/${courseId}`, courseData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      
+
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : 'Failed to update course in BSCS roadmap');
+      return rejectWithValue(error.response ? error.response.data : 'Failed to update course in PHDCS roadmap');
     }
   }
 );
 
 
 
-export const deleteCourseInBSCS = createAsyncThunk(
-  'bscs/deleteCourse',
+export const deleteCourseInPHDCS = createAsyncThunk(
+  'phdcs/deleteCourse',
   async ({ roadmapId, courseId }, { rejectWithValue }) => {
       try {
-          await api.delete(`/bscs/${roadmapId}/course/${courseId}`, {
+          await api.delete(`/phdcs/${roadmapId}/course/${courseId}`, {
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('token')}`,
               },
           });
           return courseId;
       } catch (error) {
-          return rejectWithValue(error.response ? error.response.data : 'Failed to delete course from BSCS roadmap');
+          return rejectWithValue(error.response ? error.response.data : 'Failed to delete course from PHDCS roadmap');
       }
   }
 );

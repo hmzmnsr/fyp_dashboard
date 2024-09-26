@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createBSCS } from '../../redux/actions/bscs.action';
+import { updateCourseInBSCS } from '../../redux/actions/bscs.action';
 
-const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
+const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEditingCourse, setRoadmap }) => {
     const dispatch = useDispatch();
-    const [term, setTerm] = useState('fall');
-    const [year, setYear] = useState('2023');
-    const [semester, setSemester] = useState('');
     const [courseDetails, setCourseDetails] = useState({
         courseCode: '',
         subjectName: '',
@@ -14,10 +11,13 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
     });
     const [error, setError] = useState(null);
 
+    useEffect(() => {
+        if (editingCourse) {
+            setCourseDetails(editingCourse);
+        }
+    }, [editingCourse]);
+
     const resetForm = () => {
-        setTerm('fall');
-        setYear('2023');
-        setSemester('');
         setCourseDetails({
             courseCode: '',
             subjectName: '',
@@ -28,66 +28,52 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
 
     const handleSubmit = async () => {
         try {
-            const newCourseData = {
-                term,
-                year,
-                semester,
-                courses: [courseDetails],
-            };
-            const response = await dispatch(createBSCS(newCourseData));
-
-            if (response.type === 'bscs/create/fulfilled') {
-                addRoadmapEntry(term, year, semester, courseDetails);
-                resetForm();
+            const { roadmapId, _id: courseId } = editingCourse; // Extract roadmap and course IDs
+            const response = await dispatch(updateCourseInBSCS({ roadmapId, courseId, courseData: courseDetails }));
+        
+            if (response.type === 'bscs/updateCourse/fulfilled') {
+                // Update the course in the existing roadmap entry
+                setRoadmap((prevRoadmap) => {
+                    // Find the termYear and semester using the editingCourse object (not the updated courseDetails)
+                    const termYear = `${editingCourse.term} ${editingCourse.year}`;
+                    const semester = editingCourse.semester;
+    
+                    // Update the existing course in the roadmap
+                    const updatedCourses = prevRoadmap[termYear]?.[semester]?.map((course) =>
+                        course._id === courseId ? { ...course, ...courseDetails } : course
+                    );
+    
+                    // Return the updated roadmap with the modified course
+                    return {
+                        ...prevRoadmap,
+                        [termYear]: {
+                            ...prevRoadmap[termYear],
+                            [semester]: updatedCourses
+                        }
+                    };
+                });
+        
+                resetForm(); // Reset form on successful update
             } else {
-                setError('Failed to create course.');
+                setError('Failed to update course.');
             }
         } catch (err) {
-            console.error('Error in course creation:', err);
-            setError('An error occurred while saving the course.');
+            console.error('Error in updating course:', err);
+            setError('An error occurred while updating the course.');
         }
-
+        
         setShowPopup(false);
+        setEditingCourse(null);
     };
+    
+    
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white px-20 py-10 rounded-lg w-3/6">
-                <h2 className="text-2xl font-bold mb-4">Add Roadmap</h2>
+                <h2 className="text-2xl font-bold mb-4">Edit Course</h2>
 
-                <label className="block mb-2">Select Term:</label>
-                <select
-                    className="w-full mb-4 p-2 border"
-                    value={term}
-                    onChange={(e) => setTerm(e.target.value)}
-                >
-                    <option value="fall">Fall</option>
-                    <option value="spring">Spring</option>
-                </select>
-
-                <label className="block mb-2">Select Year:</label>
-                <select
-                    className="w-full mb-4 p-2 border"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                >
-                    {Array.from({ length: 28 }, (_, i) => (
-                        <option key={i} value={2023 + i}>{2023 + i}</option>
-                    ))}
-                </select>
-
-                <label className="block mb-2">Select Semester:</label>
-                <select
-                    className="w-full mb-4 p-2 border"
-                    value={semester}
-                    onChange={(e) => setSemester(e.target.value)}
-                >
-                    <option value="">--Select Semester--</option>
-                    {Array.from({ length: 8 }, (_, i) => (
-                        <option key={i} value={i + 1}>Semester {i + 1}</option>
-                    ))}
-                </select>
-
+                {/* Always show these fields for updating */}
                 <label className="block mb-2">Course Code:</label>
                 <input
                     type="text"
@@ -120,6 +106,7 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
                         onClick={() => {
                             resetForm();
                             setShowPopup(false);
+                            setEditingCourse(null);
                         }}
                     >
                         Cancel
@@ -128,7 +115,7 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
                         className="px-8 py-2 bg-secondary-color hover:bg-blue-800 text-white rounded"
                         onClick={handleSubmit}
                     >
-                        Add
+                        Update
                     </button>
                 </div>
             </div>
@@ -136,4 +123,4 @@ const BSCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
     );
 };
 
-export default BSCSPopup;
+export default UpdateCoursePopup;

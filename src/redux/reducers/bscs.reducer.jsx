@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAllBSCS, getBSCSById, createBSCS, updateBSCS, deleteBSCS, } from "../actions/bscs.action";
+import {
+  fetchAllBSCS,
+  getBSCSById,
+  createBSCS,
+  updateBSCS,
+  deleteBSCS,
+  updateCourseInBSCS,
+  deleteCourseInBSCS,
+} from '../actions/bscs.action';
 
 const initialState = {
   bscs: [],
@@ -39,7 +47,7 @@ const bscsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Create a new BSCS roadmap
       .addCase(createBSCS.pending, (state) => {
         state.loading = true;
@@ -52,7 +60,7 @@ const bscsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Update an existing BSCS roadmap
       .addCase(updateBSCS.pending, (state) => {
         state.loading = true;
@@ -68,7 +76,7 @@ const bscsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Delete a BSCS roadmap
       .addCase(deleteBSCS.pending, (state) => {
         state.loading = true;
@@ -78,6 +86,43 @@ const bscsSlice = createSlice({
         state.bscs = state.bscs.filter((bscs) => bscs._id !== action.payload);
       })
       .addCase(deleteBSCS.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Update a specific course within a BSCS roadmap
+      .addCase(updateCourseInBSCS.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCourseInBSCS.fulfilled, (state, action) => {
+        state.loading = false;
+        const { roadmapId, course } = action.payload;
+        const roadmapIndex = state.bscs.findIndex((bscs) => bscs._id === roadmapId);
+        if (roadmapIndex !== -1) {
+          const courseIndex = state.bscs[roadmapIndex].courses.findIndex(c => c._id === course._id);
+          if (courseIndex !== -1) {
+            state.bscs[roadmapIndex].courses[courseIndex] = course;
+          }
+        }
+      })
+      .addCase(updateCourseInBSCS.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Delete a specific course within a BSCS roadmap
+      .addCase(deleteCourseInBSCS.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteCourseInBSCS.fulfilled, (state, action) => {
+        state.loading = false;
+        const { roadmapId, courseId } = action.payload;
+        const roadmapIndex = state.bscs.findIndex((bscs) => bscs._id === roadmapId);
+        if (roadmapIndex !== -1) {
+          state.bscs[roadmapIndex].courses = state.bscs[roadmapIndex].courses.filter(c => c._id !== courseId);
+        }
+      })
+      .addCase(deleteCourseInBSCS.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
