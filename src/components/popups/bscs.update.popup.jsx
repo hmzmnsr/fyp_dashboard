@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCourseInBSCS } from '../../redux/actions/bscs.action';
+import { updateCourseInBSCS, fetchAllBSCS } from '../../redux/actions/bscs.action';
 
-const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEditingCourse, setRoadmap }) => {
+const UpdateCoursePopup = ({ setShowPopup, editingCourse, setEditingCourse, setRoadmap }) => {
     const dispatch = useDispatch();
     const [courseDetails, setCourseDetails] = useState({
         courseCode: '',
@@ -30,48 +30,38 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
         try {
             const { roadmapId, _id: courseId } = editingCourse;
             const response = await dispatch(updateCourseInBSCS({ roadmapId, courseId, courseData: courseDetails }));
-        
+
             if (response.type === 'bscs/updateCourse/fulfilled') {
-                setRoadmap((prevRoadmap) => {
-                    const termYear = `${editingCourse.term} ${editingCourse.year}`;
-                    const semester = editingCourse.semester;
-    
-                    // Check if the termYear and semester exist in the roadmap
-                    if (prevRoadmap[termYear] && prevRoadmap[termYear][semester]) {
-                        // Map over the courses to find the one to update
-                        const updatedCourses = prevRoadmap[termYear][semester].map((course) =>
-                            course._id === courseId ? { ...course, ...courseDetails } : course
-                        );
-    
-                        // Return the updated roadmap with the updated courses
-                        return {
-                            ...prevRoadmap,
-                            [termYear]: {
-                                ...prevRoadmap[termYear],
-                                [semester]: updatedCourses
-                            }
-                        };
-                    }
-    
-                    // If for some reason the termYear or semester doesn't exist, just return the previous state
-                    return prevRoadmap;
-                });
-    
+                // Re-fetch the roadmap to ensure it's updated in the UI
+                const fetchResponse = await dispatch(fetchAllBSCS());
+                if (fetchResponse.type === 'bscs/fetchAll/fulfilled') {
+                    const roadmapData = fetchResponse.payload.reduce((acc, entry) => {
+                        const key = `${entry.term} ${entry.year}`;
+                        if (!acc[key]) acc[key] = {};
+                        
+                        entry.courses.forEach(course => {
+                            if (!acc[key][entry.semester]) acc[key][entry.semester] = [];
+                            acc[key][entry.semester].push({ ...course, roadmapId: entry._id });
+                        });
+
+                        return acc;
+                    }, {});
+                    
+                    setRoadmap(roadmapData);
+                }
+
                 resetForm();
             } else {
                 setError('Failed to update course.');
             }
         } catch (err) {
-            console.error('Error in updating course:', err);
+            console.error('Error updating course:', err);
             setError('An error occurred while updating the course.');
         }
-        
+
         setShowPopup(false);
         setEditingCourse(null);
     };
-    
-    
-    
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

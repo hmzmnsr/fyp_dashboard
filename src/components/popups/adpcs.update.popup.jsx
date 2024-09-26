@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCourseInADPCS } from '../../redux/actions/adpcs.action';
+import { updateCourseInADPCS, fetchAllADPCS } from '../../redux/actions/adpcs.action';
 
-const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEditingCourse, setRoadmap }) => {
+const UpdateCoursePopup = ({ setShowPopup, editingCourse, setEditingCourse, setRoadmap }) => {
     const dispatch = useDispatch();
     const [courseDetails, setCourseDetails] = useState({
         courseCode: '',
@@ -30,40 +30,37 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
         try {
             const { roadmapId, _id: courseId } = editingCourse;
             const response = await dispatch(updateCourseInADPCS({ roadmapId, courseId, courseData: courseDetails }));
-        
-            if (response.type === 'adpcs/updateCourse/fulfilled') {
-                setRoadmap((prevRoadmap) => {
-        
-                    const termYear = `${editingCourse.term} ${editingCourse.year}`;
-                    const semester = editingCourse.semester;
 
-                    const updatedCourses = prevRoadmap[termYear]?.[semester]?.map((course) =>
-                        course._id === courseId ? { ...course, ...courseDetails } : course
-                    );
-    
-                    return {
-                        ...prevRoadmap,
-                        [termYear]: {
-                            ...prevRoadmap[termYear],
-                            [semester]: updatedCourses
-                        }
-                    };
-                });
-        
+            if (response.type === 'adpcs/updateCourse/fulfilled') {
+                const fetchResponse = await dispatch(fetchAllADPCS());
+                if (fetchResponse.type === 'adpcs/fetchAll/fulfilled') {
+                    const roadmapData = fetchResponse.payload.reduce((acc, entry) => {
+                        const key = `${entry.term} ${entry.year}`;
+                        if (!acc[key]) acc[key] = {};
+                        
+                        entry.courses.forEach(course => {
+                            if (!acc[key][entry.semester]) acc[key][entry.semester] = [];
+                            acc[key][entry.semester].push({ ...course, roadmapId: entry._id });
+                        });
+
+                        return acc;
+                    }, {});
+                    
+                    setRoadmap(roadmapData);
+                }
+
                 resetForm();
             } else {
                 setError('Failed to update course.');
             }
         } catch (err) {
-            console.error('Error in updating course:', err);
+            console.error('Error updating course:', err);
             setError('An error occurred while updating the course.');
         }
-        
+
         setShowPopup(false);
         setEditingCourse(null);
     };
-    
-    
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
