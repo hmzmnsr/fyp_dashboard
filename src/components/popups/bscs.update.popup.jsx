@@ -28,22 +28,18 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
 
     const handleSubmit = async () => {
         try {
-            const { roadmapId, _id: courseId } = editingCourse; // Extract roadmap and course IDs
+            const { roadmapId, _id: courseId } = editingCourse;
             const response = await dispatch(updateCourseInBSCS({ roadmapId, courseId, courseData: courseDetails }));
         
             if (response.type === 'bscs/updateCourse/fulfilled') {
-                // Update the course in the existing roadmap entry
                 setRoadmap((prevRoadmap) => {
-                    // Find the termYear and semester using the editingCourse object (not the updated courseDetails)
                     const termYear = `${editingCourse.term} ${editingCourse.year}`;
                     const semester = editingCourse.semester;
     
-                    // Update the existing course in the roadmap
                     const updatedCourses = prevRoadmap[termYear]?.[semester]?.map((course) =>
                         course._id === courseId ? { ...course, ...courseDetails } : course
                     );
     
-                    // Return the updated roadmap with the modified course
                     return {
                         ...prevRoadmap,
                         [termYear]: {
@@ -53,7 +49,7 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
                     };
                 });
         
-                resetForm(); // Reset form on successful update
+                resetForm();
             } else {
                 setError('Failed to update course.');
             }
@@ -73,7 +69,6 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, addRoadmapEntry, setEd
             <div className="bg-white px-20 py-10 rounded-lg w-3/6">
                 <h2 className="text-2xl font-bold mb-4">Edit Course</h2>
 
-                {/* Always show these fields for updating */}
                 <label className="block mb-2">Course Code:</label>
                 <input
                     type="text"

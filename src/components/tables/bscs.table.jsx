@@ -34,6 +34,7 @@ const BSCSTable = ({ semester, roadmap, onEdit, setRoadmap, termYear }) => {
     return (
         <div className="my-5 bg-white p-4 rounded-lg shadow-lg">
             <h4 className="text-xl font-semibold mb-4 pl-2 text-primary-color">Semester {semester}</h4>
+           
             {roadmap.length > 0 ? (
                 <table className="min-w-full table-auto border-collapse text-center">
                     <thead>
