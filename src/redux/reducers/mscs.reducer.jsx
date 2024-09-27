@@ -96,12 +96,12 @@ const mscsSlice = createSlice({
       })
       .addCase(updateCourseInMSCS.fulfilled, (state, action) => {
         state.loading = false;
-        const { roadmapId, course } = action.payload;
-        const roadmapIndex = state.mscs.findIndex((mscs) => mscs._id === roadmapId);
+        const { roadmapId, updatedCourse } = action.payload;
+        const roadmapIndex = state.bsse.findIndex((bsse) => bsse._id === roadmapId);
         if (roadmapIndex !== -1) {
-          const courseIndex = state.mscs[roadmapIndex].courses.findIndex(c => c._id === course._id);
+          const courseIndex = state.bsse[roadmapIndex].courses.findIndex(course => course._id === updatedCourse._id);
           if (courseIndex !== -1) {
-            state.mscs[roadmapIndex].courses[courseIndex] = course;
+            state.bsse[roadmapIndex].courses[courseIndex] = updatedCourse;
           }
         }
       })

@@ -32,6 +32,7 @@ const UpdateCoursePopup = ({ setShowPopup, editingCourse, setEditingCourse, setR
             const response = await dispatch(updateCourseInMSCS({ roadmapId, courseId, courseData: courseDetails }));
 
             if (response.type === 'mscs/updateCourse/fulfilled') {
+               
                 const fetchResponse = await dispatch(fetchAllMSCS());
                 if (fetchResponse.type === 'mscs/fetchAll/fulfilled') {
                     const roadmapData = fetchResponse.payload.reduce((acc, entry) => {

@@ -27,7 +27,6 @@ const ADPCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
     };
 
     const handleSubmit = async () => {
-
         if (!courseDetails.courseCode || !courseDetails.subjectName || !courseDetails.creditHours || !semester) {
             setError('All fields must be filled.');
             return;
@@ -121,7 +120,7 @@ const ADPCSPopup = ({ setShowPopup, addRoadmapEntry }) => {
 
                 <div className="flex justify-end">
                     <button
-                        className="px-5 py-2 bg-gray-300 text-black hover:bg-gray-400 rounded mr-4"
+                        className="px-5 py-2 bg-gray-300 text-black hover:bg-gray-400 hover:text-white rounded mr-4"
                         onClick={() => {
                             resetForm();
                             setShowPopup(false);

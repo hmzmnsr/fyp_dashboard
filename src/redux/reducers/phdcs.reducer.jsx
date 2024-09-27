@@ -96,12 +96,12 @@ const phdcsSlice = createSlice({
       })
       .addCase(updateCourseInPHDCS.fulfilled, (state, action) => {
         state.loading = false;
-        const { roadmapId, course } = action.payload;
-        const roadmapIndex = state.phdcs.findIndex((phdcs) => phdcs._id === roadmapId);
+        const { roadmapId, updatedCourse } = action.payload;
+        const roadmapIndex = state.bsse.findIndex((bsse) => bsse._id === roadmapId);
         if (roadmapIndex !== -1) {
-          const courseIndex = state.phdcs[roadmapIndex].courses.findIndex(c => c._id === course._id);
+          const courseIndex = state.bsse[roadmapIndex].courses.findIndex(course => course._id === updatedCourse._id);
           if (courseIndex !== -1) {
-            state.phdcs[roadmapIndex].courses[courseIndex] = course;
+            state.bsse[roadmapIndex].courses[courseIndex] = updatedCourse;
           }
         }
       })
