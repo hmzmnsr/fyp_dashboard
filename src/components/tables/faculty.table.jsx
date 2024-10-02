@@ -1,6 +1,11 @@
 import React from 'react';
 
 const FacultyTable = ({ data, onEdit, onDelete }) => {
+    // Function to display only the first three words
+    const getFirstThreeWords = (text) => {
+        return text ? text.split(' ').slice(0, 3).join(' ') : '';
+    };
+
     return (
         <div className='overflow-x-auto mt-2'>
             <table className='min-w-full table-fixed bg-white shadow-md rounded-lg'>
@@ -36,7 +41,7 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                                 <td className='py-2 px-4 text-center'>{item.qualification}</td>
                                 <td className='py-2 px-4 text-center'>{item.email}</td>
                                 <td className='py-2 px-4 text-center'>{item.areaOfInterest}</td>
-                                <td className='py-2 px-4 text-center'>{item.about}</td>
+                                <td className='py-2 px-4 text-center'>{getFirstThreeWords(item.about)}</td> {/* Only first 3 words */}
                                 <td className='py-2 px-4 text-center'>
                                     <div className="flex justify-center space-x-4">
                                         <button
@@ -66,4 +71,4 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
     );
 };
 
-export default FacultyTable; 
+export default FacultyTable;

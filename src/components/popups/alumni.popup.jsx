@@ -36,7 +36,7 @@ const AddAlumniPopup = ({ onClose, alumniToEdit }) => {
             batch: alumniData.batch,
             totalStudents: alumniData.totalStudents,
         };
-    
+
         try {
             if (alumniToEdit) {
                 await dispatch(updateAlumni({ _id: alumniToEdit._id, alumniData: formData }));
@@ -49,7 +49,7 @@ const AddAlumniPopup = ({ onClose, alumniToEdit }) => {
             setErrorMessage(typeof message === 'string' ? message : JSON.stringify(message));
         }
     };
-    
+
 
     return (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
@@ -77,15 +77,19 @@ const AddAlumniPopup = ({ onClose, alumniToEdit }) => {
                         <label className='block text-gray-700 text-sm font-bold mb-2'>
                             Batch
                         </label>
-                        <input
-                            type='text'
+                        <select
                             name='batch'
                             value={alumniData.batch}
                             onChange={handleChange}
                             className='w-full p-2 border border-gray-300 rounded'
                             required
-                        />
+                        >
+                            <option value='' disabled>Select Batch</option>
+                            <option value='Fall'>Fall</option>
+                            <option value='Spring'>Spring</option>
+                        </select>
                     </div>
+
 
                     <div className='mb-4'>
                         <label className='block text-gray-700 text-sm font-bold mb-2'>
