@@ -20,6 +20,7 @@ const Events = () => {
         const formData = new FormData();
         formData.append('name', eventData.name);
         formData.append('venue', eventData.venue);
+        formData.append('about', eventData.about);
         formData.append('date', eventData.date);
         if (eventData.image) {
             formData.append('image', eventData.image);
