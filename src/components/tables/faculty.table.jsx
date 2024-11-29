@@ -18,6 +18,7 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                         <th className='w-1/6 py-2 px-4 text-center'>Email</th>
                         <th className='w-1/6 py-2 px-4 text-center'>Area of Interest</th>
                         <th className='w-1/6 py-2 px-4 text-center'>About</th>
+                        <th className='w-1/6 py-2 px-4 text-center'>Status</th>
                         <th className='w-1/6 py-2 px-4 text-center'>Actions</th>
                     </tr>
                 </thead>
@@ -42,6 +43,7 @@ const FacultyTable = ({ data, onEdit, onDelete }) => {
                                 <td className='py-2 px-4 text-center'>{item.email}</td>
                                 <td className='py-2 px-4 text-center'>{item.areaOfInterest}</td>
                                 <td className='py-2 px-4 text-center'>{getFirstThreeWords(item.about)}</td> {/* Only first 3 words */}
+                                <td className='py-2 px-4 text-center'>{item.status}</td>
                                 <td className='py-2 px-4 text-center'>
                                     <div className="flex justify-center space-x-4">
                                         <button

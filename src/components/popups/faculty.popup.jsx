@@ -7,6 +7,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
   const [email, setEmail] = useState('');
   const [areaOfInterest, setAreaOfInterest] = useState('');
   const [about, setAbout] = useState('');
+  const [status, setStatus] = useState('');
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
       setEmail(editingFaculty.email || '');
       setAreaOfInterest(editingFaculty.areaOfInterest || '');
       setAbout(editingFaculty.about || '');
+      setStatus(editingFaculty.status || '');
       setImage(editingFaculty.image || null);
     }
   }, [editingFaculty]);
@@ -37,6 +39,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
     formData.append('email', email);
     formData.append('areaOfInterest', areaOfInterest);
     formData.append('about', about);
+    formData.append('status', status);
     if (image) {
       formData.append('image', image);
     }
@@ -46,7 +49,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
-      <div className='bg-white px-20 py-16 rounded-lg w-3/6'>
+      <div className='bg-white px-20 py-10 rounded-lg w-3/6'>
         <h2 className='text-xl font-bold mb-4'>
           {editingFaculty ? 'Edit Faculty' : 'Add Faculty'}
         </h2>
@@ -89,10 +92,26 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             >
               <option value="Dean">Dean</option>
               <option value="HOD">HOD</option>
+              <option value="Department Incharge">Department Incharge</option>
               <option value="Professor">Professor</option>
               <option value="Assistant Professor">Assistant Professor</option>
               <option value="Lecturer">Lecturer</option>
               <option value="Incharge">Incharge</option>
+            </select>
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Status
+            </label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className='w-full p-2 border border-gray-300 rounded'
+              required
+            >
+              <option value="Current">Current</option>
+              <option value="Left">Left</option>
             </select>
           </div>
 
