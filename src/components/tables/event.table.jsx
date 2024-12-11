@@ -22,7 +22,6 @@ const EventTable = ({ events, onEdit, onDelete }) => {
                         <th className="w-1/4 px-4 py-2">Event Name</th>
                         <th className="w-1/4 px-4 py-2">Venue</th>
                         <th className="w-1/4 px-4 py-2">Date & Time</th>
-                        <th className="w-1/4 px-4 py-2">About</th>
                         <th className="w-1/6 px-4 py-2">Actions</th>
                     </tr>
                 </thead>
@@ -44,7 +43,6 @@ const EventTable = ({ events, onEdit, onDelete }) => {
                                 <td className="px-4 py-2">{event.name}</td>
                                 <td className="px-4 py-2">{event.venue}</td>
                                 <td className="px-4 py-2">{formatDate(event.date)}</td>
-                                <td className="px-4 py-2">{event.about}</td>
                                 <td className="px-4 py-2">
                                     <div className="flex justify-center space-x-4">
                                         <button
@@ -76,4 +74,4 @@ const EventTable = ({ events, onEdit, onDelete }) => {
     );
 };
 
-export default EventTable; 
+export default EventTable;  

@@ -7,7 +7,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
   const [email, setEmail] = useState('');
   const [areaOfInterest, setAreaOfInterest] = useState('');
   const [about, setAbout] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('Current'); // Default to "Current"
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
       setEmail(editingFaculty.email || '');
       setAreaOfInterest(editingFaculty.areaOfInterest || '');
       setAbout(editingFaculty.about || '');
-      setStatus(editingFaculty.status || '');
+      setStatus(editingFaculty.status || 'Current');
       setImage(editingFaculty.image || null);
     }
   }, [editingFaculty]);
@@ -39,7 +39,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
     formData.append('email', email);
     formData.append('areaOfInterest', areaOfInterest);
     formData.append('about', about);
-    formData.append('status', status);
+    formData.append('status', status); // Appending the status
     if (image) {
       formData.append('image', image);
     }
@@ -54,6 +54,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
           {editingFaculty ? 'Edit Faculty' : 'Add Faculty'}
         </h2>
         <form onSubmit={handleSubmit}>
+          {/* Name Input */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Name
@@ -67,6 +68,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             />
           </div>
 
+          {/* Qualification Input */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Qualification
@@ -80,6 +82,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             />
           </div>
 
+          {/* Position Dropdown */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Position
@@ -100,6 +103,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             </select>
           </div>
 
+          {/* Status Dropdown */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Status
@@ -115,6 +119,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             </select>
           </div>
 
+          {/* Email Input */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Email
@@ -128,6 +133,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             />
           </div>
 
+          {/* Area of Interest Input */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Area of Interest
@@ -140,6 +146,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             />
           </div>
 
+          {/* About Input */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               About
@@ -151,6 +158,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             />
           </div>
 
+          {/* Image Input */}
           <div className='mb-4'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Image
@@ -163,6 +171,7 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
             />
           </div>
 
+          {/* Form Buttons */}
           <div className='flex justify-end'>
             <button
               type='button'
@@ -184,4 +193,4 @@ const AddFacultyPopup = ({ onClose, onAdd, editingFaculty }) => {
   );
 };
 
-export default AddFacultyPopup; 
+export default AddFacultyPopup;

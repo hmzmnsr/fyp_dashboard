@@ -9,9 +9,8 @@ const AddEventPopup = ({ onClose, eventToEdit }) => {
         name: '',
         venue: '',
         date: '',
-        about: '',
         image: null,
-    });
+    }); 
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -22,7 +21,6 @@ const AddEventPopup = ({ onClose, eventToEdit }) => {
             setEventData({
                 name: eventToEdit.name,
                 venue: eventToEdit.venue,
-                about: eventToEdit.about,
                 date: formattedDate,
                 image: eventToEdit.image || null,
             });
@@ -55,7 +53,6 @@ const AddEventPopup = ({ onClose, eventToEdit }) => {
         const formData = new FormData();
         formData.append('name', eventData.name);
         formData.append('venue', eventData.venue);
-        formData.append('about', eventData.about);
         formData.append('date', eventData.date);
         if (eventData.image) {
             formData.append('image', eventData.image);
@@ -126,21 +123,6 @@ const AddEventPopup = ({ onClose, eventToEdit }) => {
                             required
                         />
                     </div>
-
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
-                            About
-                        </label>
-                        <textarea
-                            name="about"
-                            value={eventData.about}
-                            onChange={handleChange}
-                            className="w-full p-2 border border-gray-300 rounded"
-                            rows="4"
-                            required
-                        />
-                    </div>
-
 
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
